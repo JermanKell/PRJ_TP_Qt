@@ -1,0 +1,26 @@
+Initialiser l'environnement de travail avant de commit :
+git init
+
+Se logger pour les confs :
+git config --global user.email "<@mail>"
+git config --global user.name "<pseudo choisi lors de la creation du compte>"
+
+Set le chemin d'accès au depot en ligne :
+git remote add origin <URL_depot_en_ligne> // a la fin, ne pas oublier le .git
+
+Si tu t'es trompe dans le chemin d'accès :
+git remote remove origin // delete l'ancien URL
+
+Deposer sur le depot en ligne :
+git add --all
+git commit -m "petit message qui explique les ajouts et modifs"
+git push origin master
+
+Forcer un depot si probleme conflit
+git push origin --force --all
+
+Récupérer :
+git pull origin master
+
+Si tu as fait une erreur et que tu veux revenir en arrière :
+git reset --hard
