@@ -44,7 +44,8 @@ SOURCES += \
     #Controleur
     Controleur/checkconnexion.cpp \
     Controleur/controleur_personnel.cpp \
-    Controleur/controleur_BD.cpp
+    Controleur/controleur_BD.cpp \
+    Controleur/controleur_mainwindow.cpp
 
 HEADERS += \
     c_init_bd.h \
@@ -60,7 +61,8 @@ HEADERS += \
     #Controleur
     Controleur/checkconnexion.h \
     Controleur/controleur_personnel.h \
-    Controleur/controleur_BD.h
+    Controleur/controleur_BD.h \
+    Controleur/controleur_mainwindow.h
 
 FORMS += \
     #Vue

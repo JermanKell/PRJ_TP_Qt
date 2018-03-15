@@ -13,7 +13,8 @@ class ConnexionWindow : public QDialog
 {
     Q_OBJECT
 private:
-
+ QString Identifiant = "bob";
+ QString MdP = "teambob";
 public:
     explicit ConnexionWindow(QWidget *parent = 0);
     ~ConnexionWindow();

@@ -8,44 +8,54 @@
 #include <QSqlDatabase>
 #include <QFile>
 #include <QSqlQuery>
+#include <QDebug>
+#include <QSqlError>
 
 using namespace std;
 
 class Controller_BD {
 private:
-    Controller_BD();
-    ~Controller_BD();
+    static Controller_BD * controllerDB;
     static QSqlDatabase * db;
 
-public:
     Controller_BD();
     ~Controller_BD();
 
-    static QSqlDatabase * getBD() {
-        if (db == nullptr) {
-           // db = new QSqlDatabase();
-            db->addDatabase("SQLITE");
+public:
+    static Controller_BD * getInstance() {
+        if(controllerDB == nullptr) {
+            controllerDB = new Controller_BD();
 
             if (!QFile::exists("base_tmp.sqli"))
-                cout << "Fichier non trouvé !" << endl;
+                qDebug() << "Fichier non trouvé !";
 
+
+
+            db = new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE"));
             db->setDatabaseName("base_tmp.sqli");
-            db->open();
-         }
 
+            if(!db->open()) {
+                qDebug() << db->lastError().text();
+            }
+        }
+        return controllerDB;
+    }
+
+    static QSqlDatabase * getBD() {
         return db;
     }
 
     static void kill() {
-        if (db != nullptr) {
+        if (controllerDB != nullptr)
+        {
             db->close();
             delete db;
             db = nullptr;
+
+            delete controllerDB;
+            controllerDB = nullptr;
         }
-
     }
-
-
 };
 
 #endif // CONTOLLER_H
