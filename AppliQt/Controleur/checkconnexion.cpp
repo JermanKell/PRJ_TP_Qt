@@ -1,5 +1,6 @@
 #include "checkconnexion.h"
 
+using namespace std;
 
 CheckConnexion::CheckConnexion() {
 
@@ -18,6 +19,9 @@ bool CheckConnexion::CheckCoUser(QString Id, QString mdp) {
     query.bindValue(":Id", Id);
     query.bindValue(":mdp", mdp);
     var = query.exec();
+
+    while (query.next())
+        cout << "Connexion réussie, connexion à l'application principale en cours ..." << endl;
 
     return var;
 }

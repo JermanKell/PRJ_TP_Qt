@@ -2,6 +2,7 @@
 #define CHECKCONNEXION_H
 
 #include<qstring.h>
+#include <stdio.h>
 #include "QSqlQuery"
 #include "QVariant"
 #include <QSqlDatabase>

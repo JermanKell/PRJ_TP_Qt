@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
     MainWindow w;
 
     ConnexionWindow co_w;
-   if(co_w.exec()==QDialog::Accepted)
+    if(co_w.exec()==QDialog::Accepted)
     {
        w.show();
        return a.exec();

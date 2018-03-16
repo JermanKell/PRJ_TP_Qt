@@ -9,6 +9,7 @@
 #include <vector>
 #include <stdio.h>
 
+using namespace std;
 
 class Controleur_Personnel
 {
@@ -28,6 +29,11 @@ private:
         query.bindValue(":nom", per.getNom());
         query.bindValue(":prenom", per.getPrenom());
         var = query.exec();
+
+        while (query.next()) {
+            if (var)    cout << "Le personnel travaille déjà pour l'entreprise" << endl;
+            else    cout << "Le personnel n'a pas été trouvé" << endl;
+        }
 
         return var;
     }

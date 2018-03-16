@@ -37,16 +37,6 @@ MainWindow::MainWindow(QWidget *parent) :
     model->setHorizontalHeaderItem(8, new QStandardItem(QString("Duree RDV")));
     model->setHorizontalHeaderItem(9, new QStandardItem(QString("Priorite")));
     ui->tableViewClient->setModel(model);
-    QSqlDatabase * db = Controller_BD::getInstance()->getBD();
-    QSqlQuery * query = new QSqlQuery(*db);
-   if(!query->exec("SELECT * FROM TClient")) {
-        qDebug() << query->lastError().text();
-   }
-      while (query->next()) {
-           int name = query->value(0).toInt();
-           QString salary = query->value(1).toString();
-           qDebug() << name << salary;
-       }
 }
 
 MainWindow::~MainWindow()
