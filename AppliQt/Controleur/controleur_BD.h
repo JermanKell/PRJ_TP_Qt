@@ -3,7 +3,6 @@
 
 #include "c_init_bd.h"
 #include <stdio.h>
-#include <stdio.h>
 #include <iostream>
 #include <QSqlDatabase>
 #include <QFile>
@@ -28,7 +27,6 @@ public:
 
             if (!QFile::exists("base_tmp.sqli"))
                 qDebug() << "Fichier non trouvé !";
-
 
             db = new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE"));
             db->setDatabaseName("base_tmp.sqli");

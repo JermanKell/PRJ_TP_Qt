@@ -13,6 +13,8 @@ class ConnexionWindow : public QDialog
 {
     Q_OBJECT
 
+private:
+
 public:
     explicit ConnexionWindow(QWidget *parent = 0);
     ~ConnexionWindow();

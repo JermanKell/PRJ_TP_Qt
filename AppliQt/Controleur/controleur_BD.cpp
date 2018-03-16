@@ -10,5 +10,3 @@ Controller_BD::Controller_BD() {
 Controller_BD::~Controller_BD() {
 
 }
-
-
