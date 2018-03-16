@@ -6,18 +6,18 @@ AjouterPersonnelWindow::AjouterPersonnelWindow(QWidget *parent) :
     ui(new Ui::AjouterPersonnelWindow)
 {
     ui->setupUi(this);
-    ui->edit_Sit->addItem(tr("Banquier type A"));
-    ui->edit_Sit->addItem(tr("Banquier type B"));
+    ui->edit_Sit->addItem(tr("Banquier A"));
+    ui->edit_Sit->addItem(tr("Banquier B"));
     ui->edit_Sit->addItem(tr("Assureur logement"));
     ui->edit_Sit->addItem(tr("Assureur voiture"));
     ui->edit_Sit->addItem(tr("Assureur vie"));
+    ui->edit_Sit->addItem(tr("Divers"));
     ui->edit_Sit->addItem(tr("Informaticien"));
-    ui->edit_Sit->addItem(tr("divers"));
 
     QObject::connect(ui->boutons_Box, SIGNAL(rejected()), this, SLOT(close()));
     QObject::connect(ui->boutons_Box, SIGNAL(accepted()), this, SLOT(slotAjouterPersonnel()));
 
-    // Récupérer le lien ouvert par le controlleur lie a la BDD
+    pers = Controleur_Personnel();
 }
 
 AjouterPersonnelWindow::~AjouterPersonnelWindow()
@@ -26,6 +26,10 @@ AjouterPersonnelWindow::~AjouterPersonnelWindow()
 }
 
 void AjouterPersonnelWindow::slotAjouterPersonnel() {
-    if (pers.AjouterPersonnel(ui->edit_Nom->text(), ui->edit_Prenom->text(), ui->edit_Sit->currentText()))
+    if (pers.AjouterPersonnel(ui->edit_Nom->text(), ui->edit_Prenom->text(), ui->edit_Sit->currentText())) {
         QMessageBox::information(this, "Ajout d'un personnel", "Le personnel a bien été ajouté");
+        //this->close();
+    }
+    else QMessageBox::information(this, "Warning", "Une erreur est survenue lors de l'ajout du personnel !");
+
 }

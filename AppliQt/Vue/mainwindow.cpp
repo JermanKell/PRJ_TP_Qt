@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     //Evenements MenuBar
-    QObject::connect(ui->actionQuitter, SIGNAL(triggered()), qApp, SLOT(slotQuit()));
+    QObject::connect(ui->actionQuitter, SIGNAL(triggered()), this, SLOT(slotQuit()));
     QObject::connect(ui->actionClient, SIGNAL(triggered()), this, SLOT(slotAjouterClient()));
     QObject::connect(ui->actionPersonnel, SIGNAL(triggered()), this, SLOT(slotAjouterPersonnel()));
     QObject::connect(ui->actionA_propos, SIGNAL(triggered()), this, SLOT(slotAPropos()));

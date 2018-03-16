@@ -2,6 +2,10 @@
 #define CHECKCONNEXION_H
 
 #include<qstring.h>
+#include "QSqlQuery"
+#include "QVariant"
+#include <QSqlDatabase>
+#include "controleur_BD.h"
 
 class CheckConnexion
 {
@@ -10,7 +14,7 @@ private:
 public:
     CheckConnexion();
     ~CheckConnexion();
-    static bool CheckCoUser(QString Id, QString MDP, QString RefId, QString RefMdP);
+    static bool CheckCoUser(QString Id, QString MDP);
 };
 
 #endif // CHECKCONNEXION_H

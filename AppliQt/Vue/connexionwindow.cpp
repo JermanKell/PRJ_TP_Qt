@@ -1,6 +1,5 @@
 #include "connexionwindow.h"
 #include "ui_connexionwindow.h"
-#include "Controleur/controleur_BD.h"
 #include <QSqlDatabase>
 #include <QSqlQuery>
 
@@ -21,9 +20,8 @@ ConnexionWindow::~ConnexionWindow()
 
 void ConnexionWindow::slotCheck(void) {
     bool res = false;
-    QSqlDatabase * cont = Controller_BD::getBD();
-    QSqlQuery query(*cont);
-    res = CheckConnexion::CheckCoUser(ui->lineEdit->text(), ui->lineEdit_2->text(), Identifiant, MdP);
+
+    res = CheckConnexion::CheckCoUser(ui->lineEdit->text(), ui->lineEdit_2->text());
 
     if (res)
         accept();
