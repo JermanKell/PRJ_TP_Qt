@@ -12,13 +12,21 @@ class Controleur_Client
 private:
     QSqlQuery query;
 
-    inline bool ClientExiste(Client cl) {
-        bool var;
-/*
-        query.prepare("SELECT Nom, Prenom FROM TClient WHERE Nom LIKE :nom AND Prenom LIKE :prenom");
-        query.bindValue(":nom", cl.);*/
+    inline bool ClientExiste(Client & cl) {
+        bool bresult;
 
-        return var;
+        query.prepare("SELECT Nom, Prenom FROM TClient WHERE Nom LIKE :nom AND Prenom LIKE :prenom");
+        query.bindValue(":nom", cl.getNom());
+        query.bindValue(":prenom", cl.getPrenom());
+
+        if(!query.exec()) {
+            qDebug() << query.lastError();
+        }
+
+        if (query.next()) {
+            bresult = true;
+        }
+        return bresult;
     }
 
 public:

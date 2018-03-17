@@ -14,15 +14,15 @@ class AjouterPersonnelWindow : public QDialog
     Q_OBJECT
 
     public:
-        explicit AjouterPersonnelWindow(QWidget *parent = 0);
+        explicit AjouterPersonnelWindow(Controleur_Personnel *controleur, QWidget *parent = 0);
         ~AjouterPersonnelWindow();
 
-private slots:
-    void slotAjouterPersonnel();
+    private slots:
+        void slotAjouterPersonnel();
 
-private:
-        Ui::AjouterPersonnelWindow *ui;
-        Controleur_Personnel pers;
+    private:
+            Ui::AjouterPersonnelWindow *ui;
+            Controleur_Personnel *controleur_personnel;
 };
 
 #endif // AJOUTERPERSONNELWINDOW_H

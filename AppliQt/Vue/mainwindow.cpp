@@ -13,8 +13,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    controleur_client = new Controleur_Client();
+    controleur_personnel = new Controleur_Personnel();
+
     ui->statusBar->showMessage("Connecté");
-    controleur_mainwindow = new Controleur_mainwindow();
 
     //Evenements MenuBar
     QObject::connect(ui->actionQuitter, SIGNAL(triggered()), this, SLOT(slotQuit()));
@@ -60,10 +62,12 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete controleur_client;
+    delete controleur_personnel;
 }
 
 void MainWindow::slotAjouterClient() {
-    AjouterClientWindow ACWindow;
+    AjouterClientWindow ACWindow(controleur_client);
     if(ACWindow.exec()==QDialog::Accepted)
     {
         ui->statusBar->showMessage("Ajout client validé");
@@ -75,7 +79,7 @@ void MainWindow::slotAjouterClient() {
 }
 
 void MainWindow::slotAjouterPersonnel() {
-    AjouterPersonnelWindow APWindow;
+    AjouterPersonnelWindow APWindow(controleur_personnel);
     if(APWindow.exec()==QDialog::Accepted)
     {
         ui->statusBar->showMessage("Ajout personnel validé");

@@ -154,13 +154,13 @@
       <widget class="QLineEdit" name="lineEdit_Priorite"/>
      </item>
      <item row="8" column="1">
-      <widget class="QListWidget" name="listWidget"/>
+      <widget class="QListWidget" name="listWidget_Ressources"/>
      </item>
      <item row="9" column="1">
-      <widget class="QTextEdit" name="textEdit"/>
+      <widget class="QTextEdit" name="textEdit_Commentaires"/>
      </item>
      <item row="10" column="1">
-      <widget class="QLineEdit" name="lineEdit"/>
+      <widget class="QLineEdit" name="lineEdit_Telephone"/>
      </item>
     </layout>
    </item>

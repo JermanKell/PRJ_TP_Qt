@@ -2,7 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "controleur_mainwindow.h"
+#include "controleur_client.h"
+#include "controleur_personnel.h"
 
 namespace Ui {
     class MainWindow;
@@ -26,7 +27,8 @@ class MainWindow : public QMainWindow
 
     private:
         Ui::MainWindow *ui;
-        Controleur_mainwindow * controleur_mainwindow;
+        Controleur_Client *controleur_client;
+        Controleur_Personnel *controleur_personnel;
 
 };
 

@@ -13,8 +13,8 @@ class Client
     QString str_adresse;
     QString str_ville;
     int int_codepostal;
-    QString str_jour;
-    int int_duree;
+    QString str_dateRDV;
+    int int_dureeRDV;
     int int_priorite;
     std::vector<int> vec_int_idressource;
     QString str_commentaires;
@@ -22,9 +22,22 @@ class Client
 
     public:
 
-    Client();
     Client(QString nom, QString prenom, QString adresse, QString ville, int codepostal, QString jour, int duree, int priorite, std::vector<int> ressources);
     Client(QString nom, QString prenom, QString adresse, QString ville, int codepostal, QString jour, int duree, int priorite, std::vector<int> ressources, QString commentaires, int telephone);
+
+    QString getNom();
+    QString getPrenom();
+    QString getAdresse();
+    QString getVille();
+    int getCP();
+    QString getDateRDV();
+    int getDureeRDV();
+    int getPriorite();
+    std::vector<int> getIdRessources();
+    QString getCommentaires();
+    int getTelephone();
+
+
 };
 
 #endif // CLIENT_H
