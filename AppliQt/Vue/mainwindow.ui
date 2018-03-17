@@ -20,16 +20,16 @@
       <item row="0" column="0">
        <widget class="QTabWidget" name="tabWidget">
         <property name="currentIndex">
-         <number>1</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="tab_planification">
          <attribute name="title">
           <string>Planification</string>
          </attribute>
         </widget>
-        <widget class="QWidget" name="tab_rechercheCcient">
+        <widget class="QWidget" name="tab_Client">
          <attribute name="title">
-          <string>Recherche client</string>
+          <string>Client</string>
          </attribute>
          <widget class="QLabel" name="lab_Nom">
           <property name="geometry">
@@ -190,6 +190,11 @@
            <string>Supprimer</string>
           </property>
          </widget>
+        </widget>
+        <widget class="QWidget" name="tab_Personnel">
+         <attribute name="title">
+          <string>Personnel</string>
+         </attribute>
         </widget>
        </widget>
       </item>

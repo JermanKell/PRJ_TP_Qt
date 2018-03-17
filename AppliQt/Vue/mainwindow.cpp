@@ -31,17 +31,11 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->btn_SupprimerClient, SIGNAL(clicked()), this, SLOT(slotSupprimerClient()));
 
     //TableView
-    QStandardItemModel * model = new QStandardItemModel(0, 10, this);
-    model->setHorizontalHeaderItem(0, new QStandardItem(QString("Id")));
-    model->setHorizontalHeaderItem(1, new QStandardItem(QString("Nom")));
-    model->setHorizontalHeaderItem(2, new QStandardItem(QString("Prenom")));
-    model->setHorizontalHeaderItem(3, new QStandardItem(QString("Adresse")));
-    model->setHorizontalHeaderItem(4, new QStandardItem(QString("Ville")));
-    model->setHorizontalHeaderItem(5, new QStandardItem(QString("Code postal")));
-    model->setHorizontalHeaderItem(6, new QStandardItem(QString("Telephone")));
-    model->setHorizontalHeaderItem(7, new QStandardItem(QString("Date RDV")));
-    model->setHorizontalHeaderItem(8, new QStandardItem(QString("Duree RDV")));
-    model->setHorizontalHeaderItem(9, new QStandardItem(QString("Priorite")));
+    QStandardItemModel * model = new QStandardItemModel(0, 4, this);
+    model->setHorizontalHeaderItem(0, new QStandardItem(QString("Nom")));
+    model->setHorizontalHeaderItem(1, new QStandardItem(QString("Prenom")));
+    model->setHorizontalHeaderItem(2, new QStandardItem(QString("Date RDV")));
+    model->setHorizontalHeaderItem(3, new QStandardItem(QString("Id")));
     ui->tableViewClient->setModel(model);
 
     //Données du TableView
@@ -54,23 +48,11 @@ MainWindow::MainWindow(QWidget *parent) :
         QStandardItem *item_Id = new QStandardItem(query->value(0).toString());
         QStandardItem *item_Nom = new QStandardItem(query->value(1).toString());
         QStandardItem *item_Prenom = new QStandardItem(query->value(2).toString());
-        QStandardItem *item_Adresse = new QStandardItem(query->value(3).toString());
-        QStandardItem *item_Ville = new QStandardItem(query->value(4).toString());
-        QStandardItem *item_CP = new QStandardItem(query->value(5).toString());
-        QStandardItem *item_Tel = new QStandardItem(query->value(7).toString());
         QStandardItem *item_DateRDV = new QStandardItem(query->value(8).toString());
-        QStandardItem *item_DureeRDV = new QStandardItem(query->value(9).toString());
-        QStandardItem *item_Priorite = new QStandardItem(query->value(10).toString());
-        newRow.append(item_Id);
         newRow.append(item_Nom);
         newRow.append(item_Prenom);
-        newRow.append(item_Adresse);
-        newRow.append(item_Ville);
-        newRow.append(item_CP);
-        newRow.append(item_Tel);
         newRow.append(item_DateRDV);
-        newRow.append(item_DureeRDV);
-        newRow.append(item_Priorite);
+        newRow.append(item_Id);
         model->appendRow(newRow);
     }
 }
