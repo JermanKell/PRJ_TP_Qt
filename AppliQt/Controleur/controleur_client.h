@@ -36,6 +36,7 @@ public:
     bool AjouterClient();
     bool ModifierClient();
     bool SupprimerClient();
+    vector<Client>* GetListeClient();
 };
 
 #endif // CONTROLEUR_CLIENT_H

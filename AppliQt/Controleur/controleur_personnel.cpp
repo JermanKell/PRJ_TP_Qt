@@ -79,3 +79,16 @@ bool Controleur_Personnel::SupprimerPersonnel() {
 
     return var;
 }
+
+vector<Personnel>* Controleur_Personnel::GetListePersonnel() {
+    if(!query.exec("SELECT * FROM TRessource")) {
+        qDebug() << query.lastError().text();
+    }
+    vector<Personnel>* vecPersonnel = new vector<Personnel>();
+    while (query.next()) {
+        Personnel personnel(query.value(1).toString(), query.value(2).toString(), query.value(3).toInt());
+        personnel.setId(query.value(0).toInt());
+        vecPersonnel->push_back(personnel);
+    }
+    return vecPersonnel;
+}

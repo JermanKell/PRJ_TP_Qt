@@ -8,6 +8,7 @@ class Client
 {
     private:
 
+    int int_id;
     QString str_nom;
     QString str_prenom;
     QString str_adresse;
@@ -22,9 +23,9 @@ class Client
 
     public:
 
-    Client(QString nom, QString prenom, QString adresse, QString ville, int codepostal, QString jour, int duree, int priorite, std::vector<int> ressources);
     Client(QString nom, QString prenom, QString adresse, QString ville, int codepostal, QString jour, int duree, int priorite, std::vector<int> ressources, QString commentaires, int telephone);
 
+    int getId();
     QString getNom();
     QString getPrenom();
     QString getAdresse();
@@ -36,6 +37,8 @@ class Client
     std::vector<int> getIdRessources();
     QString getCommentaires();
     int getTelephone();
+
+    void setId(int id);
 
 
 };

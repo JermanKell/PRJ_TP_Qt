@@ -34,7 +34,6 @@ private:
             if (var)    cout << "Le personnel travaille déjà pour l'entreprise" << endl;
             else    cout << "Le personnel n'a pas été trouvé" << endl;
         }
-
         return var;
     }
 
@@ -45,6 +44,7 @@ public:
     bool AjouterPersonnel(QString nom, QString prenom, QString travail);
     bool ModifierPersonnel();
     bool SupprimerPersonnel();
+    vector<Personnel>* GetListePersonnel();
 };
 
 #endif // CONTROLLEUR_PERSONNEL_H

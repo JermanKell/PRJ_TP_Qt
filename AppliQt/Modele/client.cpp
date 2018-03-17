@@ -1,31 +1,22 @@
 #include "client.h"
 
-Client::Client(QString nom, QString prenom, QString adresse, QString ville, int codepostal, QString jour, int duree, int priorite, std::vector<int> ressources)
+Client::Client(QString nom, QString prenom, QString adresse, QString ville, int codepostal, QString date, int duree, int priorite, std::vector<int> ressources, QString commentaires, int telephone)
 {
     str_nom = nom;
     str_prenom = prenom;
     str_adresse = adresse;
     str_ville = ville;
     int_codepostal = codepostal;
-    str_dateRDV = jour;
-    int_dureeRDV = duree;
-    int_priorite = priorite;
-    vec_int_idressource = ressources;
-}
-
-Client::Client(QString nom, QString prenom, QString adresse, QString ville, int codepostal, QString jour, int duree, int priorite, std::vector<int> ressources, QString commentaires, int telephone)
-{
-    str_nom = nom;
-    str_prenom = prenom;
-    str_adresse = adresse;
-    str_ville = ville;
-    int_codepostal = codepostal;
-    str_dateRDV = jour;
+    str_dateRDV = date;
     int_dureeRDV = duree;
     int_priorite = priorite;
     vec_int_idressource = ressources;
     str_commentaires = commentaires;
     int_telephone = telephone;
+}
+
+int Client::getId() {
+    return int_id;
 }
 
 QString Client::getNom() {
@@ -70,4 +61,8 @@ QString Client::getCommentaires() {
 
 int Client::getTelephone() {
     return int_telephone;
+}
+
+void Client::setId(int id) {
+    int_id = id;
 }

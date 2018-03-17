@@ -41,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableViewClient->setModel(model);
 
     //Données du TableView
-    QSqlQuery * query = new QSqlQuery(*Controller_BD::getInstance()->getBD());
+    /*QSqlQuery * query = new QSqlQuery(*Controller_BD::getInstance()->getBD());
     if(!query->exec("SELECT * FROM TClient")) {
         qDebug() << query->lastError().text();
     }
@@ -56,7 +56,23 @@ MainWindow::MainWindow(QWidget *parent) :
         newRow.append(item_DateRDV);
         newRow.append(item_Id);
         model->appendRow(newRow);
+    }*/
+
+    vector<Client> *vecClient = controleur_client->GetListeClient();
+
+    for(unsigned int uiBoucle=0; uiBoucle < vecClient->size(); uiBoucle++) {
+        QList<QStandardItem*> newRow;
+        QStandardItem *item_Id = new QStandardItem(vecClient->at(uiBoucle).getId());
+        QStandardItem *item_Nom = new QStandardItem(vecClient->at(uiBoucle).getNom());
+        QStandardItem *item_Prenom = new QStandardItem(vecClient->at(uiBoucle).getPrenom());
+        QStandardItem *item_DateRDV = new QStandardItem(vecClient->at(uiBoucle).getDateRDV());
+        newRow.append(item_Id);
+        newRow.append(item_Nom);
+        newRow.append(item_Prenom);
+        newRow.append(item_DateRDV);
+        model->appendRow(newRow);
     }
+
 }
 
 MainWindow::~MainWindow()

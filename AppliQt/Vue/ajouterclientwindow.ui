@@ -154,7 +154,14 @@
       <widget class="QLineEdit" name="lineEdit_Priorite"/>
      </item>
      <item row="8" column="1">
-      <widget class="QListWidget" name="listWidget_Ressources"/>
+      <widget class="QListWidget" name="listWidget_Ressources">
+       <property name="selectionMode">
+        <enum>QAbstractItemView::MultiSelection</enum>
+       </property>
+       <property name="selectionBehavior">
+        <enum>QAbstractItemView::SelectItems</enum>
+       </property>
+      </widget>
      </item>
      <item row="9" column="1">
       <widget class="QTextEdit" name="textEdit_Commentaires"/>

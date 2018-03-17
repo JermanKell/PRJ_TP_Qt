@@ -11,6 +11,10 @@ Personnel::~Personnel()
 
 }
 
+int Personnel::getId() {
+    return Id;
+}
+
 QString Personnel::getPrenom() {
     return Prenom;
 }
@@ -20,4 +24,8 @@ QString Personnel::getNom() {
 
 int Personnel::getTypeMetier() {
     return Type;
+}
+
+void Personnel::setId(int id) {
+    Id = id;
 }

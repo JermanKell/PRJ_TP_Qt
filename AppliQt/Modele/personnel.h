@@ -5,6 +5,7 @@
 
 class Personnel {
   private:
+    int Id;
     QString Nom;
     QString Prenom;
     int Type;
@@ -13,10 +14,13 @@ class Personnel {
     Personnel(QString nom, QString prenom, int metierType);
     ~Personnel();
 
+    int getId();
     QString getPrenom();
     QString getNom();
 
     int getTypeMetier();
+
+    void setId(int id);
 };
 
 #endif // PERSONNEL_H
