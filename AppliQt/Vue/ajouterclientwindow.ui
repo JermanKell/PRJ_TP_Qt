@@ -73,9 +73,9 @@
       </widget>
      </item>
      <item row="5" column="0">
-      <widget class="QLabel" name="label_JourRDV">
+      <widget class="QLabel" name="label_DateRDV">
        <property name="text">
-        <string>Jour rendez-vous : </string>
+        <string>Date rendez-vous : </string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -142,10 +142,14 @@
       <widget class="QLineEdit" name="lineEdit_Ville"/>
      </item>
      <item row="4" column="1">
-      <widget class="QLineEdit" name="lineEdit_CodePostal"/>
+      <widget class="QLineEdit" name="lineEdit_CodePostal">
+       <property name="maxLength">
+        <number>5</number>
+       </property>
+      </widget>
      </item>
      <item row="5" column="1">
-      <widget class="QLineEdit" name="lineEdit_JourRDV"/>
+      <widget class="QLineEdit" name="lineEdit_DateRDV"/>
      </item>
      <item row="6" column="1">
       <widget class="QLineEdit" name="lineEdit_Duree"/>
@@ -167,7 +171,11 @@
       <widget class="QTextEdit" name="textEdit_Commentaires"/>
      </item>
      <item row="10" column="1">
-      <widget class="QLineEdit" name="lineEdit_Telephone"/>
+      <widget class="QLineEdit" name="lineEdit_Telephone">
+       <property name="maxLength">
+        <number>12</number>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

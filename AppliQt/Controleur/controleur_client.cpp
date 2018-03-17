@@ -12,6 +12,19 @@ vector<Client>* Controleur_Client::GetListeClient() {
     vector<Client>* vecClient = new vector<Client>();
     while (query.next()) {
         vector<int> vecId;
+        int idClient = query.value(0).toInt();
+
+        QSqlQuery queryRessources = QSqlQuery(*(Controller_BD::getInstance()->getBD()));
+        queryRessources.prepare("SELECT * FROM TRdv WHERE IdClient = :IdClient");
+        queryRessources.bindValue(":IdClient", idClient);
+        if(!queryRessources.exec()) {
+            qDebug() << query.lastError().text();
+        }
+
+        while (queryRessources.next()) {
+            vecId.push_back(queryRessources.value(2).toInt());
+        }
+
        Client client(query.value(1).toString(), query.value(2).toString(), query.value(3).toString(), query.value(4).toString(),
                      query.value(5).toInt(),
                      query.value(8).toString(),

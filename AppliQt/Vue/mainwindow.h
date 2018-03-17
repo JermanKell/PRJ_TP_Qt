@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "controleur_client.h"
 #include "controleur_personnel.h"
+#include <QSqlTableModel>
 
 namespace Ui {
     class MainWindow;
@@ -27,6 +28,7 @@ class MainWindow : public QMainWindow
 
     private:
         Ui::MainWindow *ui;
+        QSqlTableModel *model;
         Controleur_Client *controleur_client;
         Controleur_Personnel *controleur_personnel;
 

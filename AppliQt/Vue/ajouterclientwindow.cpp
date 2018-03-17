@@ -1,18 +1,84 @@
 #include "ajouterclientwindow.h"
 #include "ui_ajouterclientwindow.h"
+#include <QList>
 
-AjouterClientWindow::AjouterClientWindow(Controleur_Client *controleur, QWidget *parent) :
+AjouterClientWindow::AjouterClientWindow(Controleur_Client *controleur_c, Controleur_Personnel *controleur_p, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AjouterClientWindow)
 {
     ui->setupUi(this);
-    controleur_client = controleur;
+    controleur_client = controleur_c;
+    controleur_personnel = controleur_p;
+
+    RemplirListWidgetRessources();
+
+    ui->lineEdit_CodePostal->setValidator(new QDoubleValidator(0, 99999, 5, this));
+    ui->lineEdit_Duree->setValidator(new QIntValidator(0, 600, this));
+    ui->lineEdit_Priorite->setValidator(new QIntValidator(1, 5, this));
+    ui->lineEdit_Telephone->setValidator( new QIntValidator(0, 999999999999, this) );
 
     QObject::connect(ui->QDialog_btn_ValiderAjoutClient, SIGNAL(rejected()), this, SLOT(close()));
     QObject::connect(ui->QDialog_btn_ValiderAjoutClient, SIGNAL(accepted()), this, SLOT(slotAjouterClient()));
 }
 
+void AjouterClientWindow::RemplirListWidgetRessources(){
+    vector<Personnel> *vecPersonnel = controleur_personnel->GetListePersonnel();
+     for(unsigned int uiBoucle = 0; uiBoucle < vecPersonnel->size(); uiBoucle++) {
+        ui->listWidget_Ressources->addItem(vecPersonnel->at(uiBoucle).getNom());
+        QListWidgetItem* item = ui->listWidget_Ressources->item(uiBoucle);
+        item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
+        item->setCheckState(Qt::Unchecked);
+     }
+     delete vecPersonnel;
+ }
+
 void AjouterClientWindow::slotAjouterClient() {
+    bool bValide = true;
+    unsigned int uiCountChecked = 0;
+
+    if(ui->lineEdit_Nom->text().isEmpty()) {
+        bValide = false;
+        ui->lineEdit_Nom->setStyleSheet("border: 1px solid red");
+    }
+    if(ui->lineEdit_Prenom->text().isEmpty()) {
+        bValide = false;
+        ui->lineEdit_Prenom->setStyleSheet("border: 1px solid red");
+    }
+    if(ui->lineEdit_Adresse->text().isEmpty()) {
+        bValide = false;
+        ui->lineEdit_Adresse->setStyleSheet("border: 1px solid red");
+    }
+    if(ui->lineEdit_CodePostal->text().count() != 5) {
+        bValide = false;
+        ui->lineEdit_CodePostal->setStyleSheet("border: 1px solid red");
+    }
+    if(ui->lineEdit_Duree->text().isEmpty()) {
+        bValide = false;
+        ui->lineEdit_Duree->setStyleSheet("border: 1px solid red");
+    }
+    if(ui->lineEdit_Priorite->text().isEmpty()) {
+        bValide = false;
+        ui->lineEdit_Priorite->setStyleSheet("border: 1px solid red");
+    }
+    if(ui->lineEdit_Ville->text().isEmpty()) {
+        bValide = false;
+        ui->lineEdit_Ville->setStyleSheet("border: 1px solid red");
+    }
+    if(!ui->lineEdit_Telephone->text().isEmpty() && ui->lineEdit_Telephone->text().size() < 10) {
+        bValide = false;
+        ui->lineEdit_Telephone->setStyleSheet("border: 1px solid red");
+    }
+
+    for(int iBoucle = 0; iBoucle < ui->listWidget_Ressources->count(); iBoucle++) {
+        if(ui->listWidget_Ressources->item(iBoucle)->checkState() == Qt::Checked) {
+            uiCountChecked++;
+        }
+    }
+    if(uiCountChecked == 0) {
+        bValide = false;
+        ui->listWidget_Ressources->setStyleSheet("border: 1px solid red");
+    }
+
     /*vector<int> vec_ressources;
     for(unsigned int uiBoucle=0; uiBoucle < ui->listWidget_Ressources->count(); uiBoucle++) {
         vec_ressources.push_back(ui->listWidget_Ressources->);

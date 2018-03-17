@@ -4,7 +4,6 @@
 #include "ajouterpersonnelwindow.h"
 #include "aproposwindow.h"
 #include "Controleur/controleur_BD.h"
-#include <QStandardItemModel>
 #include <QSqlQuery>
 #include <QDebug>
 
@@ -32,31 +31,26 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->btn_ModifierClient, SIGNAL(clicked()), this, SLOT(slotModifierClient()));
     QObject::connect(ui->btn_SupprimerClient, SIGNAL(clicked()), this, SLOT(slotSupprimerClient()));
 
+    model = new QSqlTableModel(this, *Controller_BD::getInstance()->getBD());
+    model->setTable("TClient");
+    model->select();
+    ui->tableViewClient->setModel(model);
+    ui->tableViewClient->hideColumn(3);
+    ui->tableViewClient->hideColumn(4);
+    ui->tableViewClient->hideColumn(5);
+    ui->tableViewClient->hideColumn(6);
+    ui->tableViewClient->hideColumn(7);
+    ui->tableViewClient->hideColumn(9);
+    ui->tableViewClient->hideColumn(10);
+
+
     //TableView
-    QStandardItemModel * model = new QStandardItemModel(0, 4, this);
+   /* QStandardItemModel * model = new QStandardItemModel(0, 4, this);
     model->setHorizontalHeaderItem(0, new QStandardItem(QString("Nom")));
     model->setHorizontalHeaderItem(1, new QStandardItem(QString("Prenom")));
     model->setHorizontalHeaderItem(2, new QStandardItem(QString("Date RDV")));
     model->setHorizontalHeaderItem(3, new QStandardItem(QString("Id")));
     ui->tableViewClient->setModel(model);
-
-    //Données du TableView
-    /*QSqlQuery * query = new QSqlQuery(*Controller_BD::getInstance()->getBD());
-    if(!query->exec("SELECT * FROM TClient")) {
-        qDebug() << query->lastError().text();
-    }
-    while (query->next()) {
-        QList<QStandardItem*> newRow;
-        QStandardItem *item_Id = new QStandardItem(query->value(0).toString());
-        QStandardItem *item_Nom = new QStandardItem(query->value(1).toString());
-        QStandardItem *item_Prenom = new QStandardItem(query->value(2).toString());
-        QStandardItem *item_DateRDV = new QStandardItem(query->value(8).toString());
-        newRow.append(item_Nom);
-        newRow.append(item_Prenom);
-        newRow.append(item_DateRDV);
-        newRow.append(item_Id);
-        model->appendRow(newRow);
-    }*/
 
     vector<Client> *vecClient = controleur_client->GetListeClient();
 
@@ -71,8 +65,7 @@ MainWindow::MainWindow(QWidget *parent) :
         newRow.append(item_Prenom);
         newRow.append(item_DateRDV);
         model->appendRow(newRow);
-    }
-
+    }*/
 }
 
 MainWindow::~MainWindow()
@@ -83,7 +76,7 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::slotAjouterClient() {
-    AjouterClientWindow ACWindow(controleur_client);
+    AjouterClientWindow ACWindow(controleur_client, controleur_personnel);
     if(ACWindow.exec()==QDialog::Accepted)
     {
         ui->statusBar->showMessage("Ajout client validé");
