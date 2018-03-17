@@ -54,7 +54,7 @@
       <widget class="QComboBox" name="edit_Sit"/>
      </item>
      <item>
-      <widget class="QDialogButtonBox" name="boutons_Box">
+      <widget class="QDialogButtonBox" name="QDialog_btn_ValiderAjoutPersonnel">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -70,7 +70,7 @@
  <resources/>
  <connections>
   <connection>
-   <sender>boutons_Box</sender>
+   <sender>QDialog_btn_ValiderAjoutPersonnel</sender>
    <signal>accepted()</signal>
    <receiver>AjouterPersonnelWindow</receiver>
    <slot>accept()</slot>
@@ -86,7 +86,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>boutons_Box</sender>
+   <sender>QDialog_btn_ValiderAjoutPersonnel</sender>
    <signal>rejected()</signal>
    <receiver>AjouterPersonnelWindow</receiver>
    <slot>reject()</slot>

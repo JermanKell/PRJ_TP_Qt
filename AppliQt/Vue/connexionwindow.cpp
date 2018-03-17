@@ -26,5 +26,5 @@ void ConnexionWindow::slotCheck(void) {
     if (res)
         accept();
 
-    else QMessageBox::information(this, "Warning", "Login ou Mot de passe incorrecte !");
+    else QMessageBox::critical(this, "Erreur", "Login ou Mot de passe incorrecte !");
 }

@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->statusBar->showMessage("Connecté");
     controleur_mainwindow = new Controleur_mainwindow();
 
     //Evenements MenuBar
@@ -25,6 +26,9 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->action_client_Tool, SIGNAL(triggered()), this, SLOT(slotAjouterClient()));
     QObject::connect(ui->action_Personnel_Tool, SIGNAL(triggered()), this, SLOT(slotAjouterPersonnel()));
 
+    //Evenements TableViewClient
+    QObject::connect(ui->btn_ModifierClient, SIGNAL(clicked()), this, SLOT(slotModifierClient()));
+    QObject::connect(ui->btn_SupprimerClient, SIGNAL(clicked()), this, SLOT(slotSupprimerClient()));
 
     //TableView
     QStandardItemModel * model = new QStandardItemModel(0, 10, this);
@@ -78,17 +82,53 @@ MainWindow::~MainWindow()
 
 void MainWindow::slotAjouterClient() {
     AjouterClientWindow ACWindow;
-    ACWindow.exec();
+    if(ACWindow.exec()==QDialog::Accepted)
+    {
+        ui->statusBar->showMessage("Ajout client validé");
+    }
+    else
+    {
+        ui->statusBar->showMessage("Ajout client annulé");
+    }
 }
 
 void MainWindow::slotAjouterPersonnel() {
     AjouterPersonnelWindow APWindow;
-    APWindow.exec();
+    if(APWindow.exec()==QDialog::Accepted)
+    {
+        ui->statusBar->showMessage("Ajout personnel validé");
+    }
+    else
+    {
+        ui->statusBar->showMessage("Ajout personnel annulé");
+    }
 }
 
 void MainWindow::slotAPropos() {
     AProposWindow AWindow;
     AWindow.exec();
+}
+
+void MainWindow::slotModifierClient() {
+    if(ui->tableViewClient->currentIndex().row() == -1) {
+        ui->statusBar->showMessage("Modification client échoué");
+        QMessageBox::warning(this, "Modifier quel client?", "Aucun client n'a été sélectionné dans le tableau");
+    }
+    else
+    {
+
+    }
+}
+
+void MainWindow::slotSupprimerClient() {
+    if(ui->tableViewClient->currentIndex().row() == -1) {
+        ui->statusBar->showMessage("Supression client échoué");
+        QMessageBox::warning(this, "Supprimer quel client?", "Aucun client n'a été sélectionné dans le tableau");
+    }
+    else
+    {
+        //model->removeRow(currentIndex.row());
+    }
 }
 
 void MainWindow::slotQuit() {

@@ -21,6 +21,8 @@ class MainWindow : public QMainWindow
         void slotAjouterPersonnel();
         void slotAPropos();
         void slotQuit();
+        void slotModifierClient();
+        void slotSupprimerClient();
 
     private:
         Ui::MainWindow *ui;

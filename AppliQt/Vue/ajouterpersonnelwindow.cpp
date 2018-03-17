@@ -14,8 +14,8 @@ AjouterPersonnelWindow::AjouterPersonnelWindow(QWidget *parent) :
     ui->edit_Sit->addItem(tr("Divers"));
     ui->edit_Sit->addItem(tr("Informaticien"));
 
-    QObject::connect(ui->boutons_Box, SIGNAL(rejected()), this, SLOT(close()));
-    QObject::connect(ui->boutons_Box, SIGNAL(accepted()), this, SLOT(slotAjouterPersonnel()));
+    QObject::connect(ui->QDialog_btn_ValiderAjoutPersonnel, SIGNAL(rejected()), this, SLOT(close()));
+    QObject::connect(ui->QDialog_btn_ValiderAjoutPersonnel, SIGNAL(accepted()), this, SLOT(slotAjouterPersonnel()));
 
     pers = Controleur_Personnel();
 }

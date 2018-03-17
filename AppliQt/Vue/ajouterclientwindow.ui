@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>435</width>
-    <height>429</height>
+    <height>433</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -165,7 +165,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QDialogButtonBox" name="QDialogbtn_ValiderAjoutClient">
+    <widget class="QDialogButtonBox" name="QDialog_btn_ValiderAjoutClient">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -179,7 +179,7 @@
  <resources/>
  <connections>
   <connection>
-   <sender>QDialogbtn_ValiderAjoutClient</sender>
+   <sender>QDialog_btn_ValiderAjoutClient</sender>
    <signal>accepted()</signal>
    <receiver>AjouterClientWindow</receiver>
    <slot>accept()</slot>
@@ -195,7 +195,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>QDialogbtn_ValiderAjoutClient</sender>
+   <sender>QDialog_btn_ValiderAjoutClient</sender>
    <signal>rejected()</signal>
    <receiver>AjouterClientWindow</receiver>
    <slot>reject()</slot>
