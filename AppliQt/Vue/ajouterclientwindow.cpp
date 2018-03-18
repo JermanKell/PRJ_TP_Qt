@@ -1,6 +1,6 @@
 #include "ajouterclientwindow.h"
 #include "ui_ajouterclientwindow.h"
-#include <QList>
+#include <QMessageBox>
 
 AjouterClientWindow::AjouterClientWindow(Controleur_Client *controleur_c, Controleur_Personnel *controleur_p, QWidget *parent) :
     QDialog(parent),
@@ -10,16 +10,16 @@ AjouterClientWindow::AjouterClientWindow(Controleur_Client *controleur_c, Contro
     controleur_client = controleur_c;
     controleur_personnel = controleur_p;
 
-    RemplirListWidgetRessources();
+    InitialiseGraphique();
+}
 
+void AjouterClientWindow::InitialiseGraphique() {
     ui->lineEdit_CodePostal->setValidator(new QDoubleValidator(0, 99999, 5, this));
     ui->lineEdit_Duree->setValidator(new QIntValidator(0, 600, this));
     ui->lineEdit_Priorite->setValidator(new QIntValidator(1, 5, this));
     ui->lineEdit_Telephone->setValidator(new QDoubleValidator(0, 9999999999, 10, this));
     ui->dateEdit_dateRDV->setMinimumDate(QDate::currentDate());
-
-    QObject::connect(ui->QDialog_btn_ValiderAjoutClient, SIGNAL(rejected()), this, SLOT(close()));
-    QObject::connect(ui->QDialog_btn_ValiderAjoutClient, SIGNAL(accepted()), this, SLOT(slotAjouterClient()));
+    RemplirListWidgetRessources();
 }
 
 void AjouterClientWindow::RemplirListWidgetRessources(){
@@ -36,7 +36,6 @@ void AjouterClientWindow::RemplirListWidgetRessources(){
 bool AjouterClientWindow::ControleData() {
     bool bValide = true;
     unsigned int uiCountChecked = 0;
-
     if(ui->lineEdit_Nom->text().isEmpty()) {
         bValide = false;
         ui->lineEdit_Nom->setStyleSheet("border: 2px solid red");
@@ -72,7 +71,7 @@ bool AjouterClientWindow::ControleData() {
     else {
         ui->lineEdit_Duree->setStyleSheet(styleSheet());
     }
-    if(ui->lineEdit_Priorite->text().isEmpty()) {
+    if(ui->lineEdit_Priorite->text().isEmpty() || ui->lineEdit_Priorite->text().toInt() < 1) {
         bValide = false;
         ui->lineEdit_Priorite->setStyleSheet("border: 2px solid red");
     }
@@ -104,38 +103,80 @@ bool AjouterClientWindow::ControleData() {
     }
     else {
         ui->listWidget_Ressources->setStyleSheet(styleSheet());
-        bValide = false;
     }
     return bValide;
 }
 
-void AjouterClientWindow::slotAjouterClient() {
-
-    /*vector<int> vec_ressources;
-    for(unsigned int uiBoucle=0; uiBoucle < ui->listWidget_Ressources->count(); uiBoucle++) {
-        vec_ressources.push_back(ui->listWidget_Ressources->);
-    }
-
-    Client client(ui->lineEdit_Nom->text(), ui->lineEdit_Prenom->text(), ui->lineEdit_Adresse->text(), ui->lineEdit_Ville->text(), ui->lineEdit_CodePostal->text().toInt(),
-                  ui->lineEdit_JourRDV->text(), ui->lineEdit_Duree->text(), ui->lineEdit_Priorite->text(), ui->listWidget_Ressources->......, )
-    if (controleur_personnel->AjouterPersonnel(ui->edit_Nom->text(), ui->edit_Prenom->text(), ui->edit_Sit->currentText())) {
-        QMessageBox::information(this, "Ajout d'un personnel", "Le personnel a bien été ajouté");
-        //this->close();
-    }
-    else QMessageBox::information(this, "Warning", "Une erreur est survenue lors de l'ajout du personnel !");*/
-
-}
-
-void AjouterClientWindow::reject()
+void AjouterClientWindow::accept() //SURCHARGE POUR EMPECHER LA FENETRE DE SE FERMER
 {
-    qDebug() << Q_FUNC_INFO << "QDialog::reject()";
-    done(Rejected);
-}
+    if (!ControleData())
+    {
+        QMessageBox::warning(this, "Champs invalides", "Certains champs ne sont pas valides !");
+    }
+    else
+    {
+        Client client(ui->lineEdit_Nom->text(), ui->lineEdit_Prenom->text(), ui->lineEdit_Adresse->text(),
+                      ui->lineEdit_Ville->text(), ui->lineEdit_CodePostal->text().toInt(),
+                      ui->dateEdit_dateRDV->text(), ui->lineEdit_Duree->text().toInt(), ui->lineEdit_Priorite->text().toInt(),
+                      ui->textEdit_Commentaires->toPlainText(), ui->lineEdit_Telephone->text().toInt());
+        if(controleur_client->ClientExiste(client))
+        {
+            QMessageBox::critical(this, "Erreur", "Un client avec le même nom et prénom existe déja !");
+        }
+        else
+        {
+            bool bErreurSQL = false;
+            vector<QString> vecRessources;
+            for(int iBoucle = 0; iBoucle < ui->listWidget_Ressources->count(); iBoucle++)
+            {
+                if(ui->listWidget_Ressources->item(iBoucle)->checkState() == Qt::Checked)
+                {
+                    vecRessources.push_back(ui->listWidget_Ressources->item(iBoucle)->text());
+                }
+            }
+            QSqlDatabase *db = Controller_BD::getInstance()->getBD();
+            if(!db->transaction())
+            {
+                qDebug() << db->lastError();
+                bErreurSQL = true;
+            }
+            else
+            {
+                if(!controleur_client->AjouterClient(client))
+                {
+                    bErreurSQL = true;
+                }
+                int idNouveauClient = controleur_client->NbClient();
 
-void AjouterClientWindow::accept()
-{
-    qDebug() << Q_FUNC_INFO << "QDialog::reject()";
-    //done(Accepted);
+                vector<Personnel>* vecPersonnel = controleur_personnel->GetListePersonnel();
+                for(unsigned int uiBoucleR=0; uiBoucleR < vecRessources.size(); uiBoucleR++)
+                {
+                    for(unsigned int uiBoucleP=0; uiBoucleP < vecPersonnel->size(); uiBoucleP++)
+                    {
+                        if(QString::compare(vecPersonnel->at(uiBoucleP).getNom(), vecRessources.at(uiBoucleR), Qt::CaseSensitive) == 0)
+                        {
+                            if(!controleur_client->AjouterRDVClient(idNouveauClient, vecPersonnel->at(uiBoucleP).getId()))
+                            {
+                                bErreurSQL = true;
+                            }
+                        }
+                    }
+                }
+                delete vecPersonnel;
+
+                if (!bErreurSQL)
+                {
+                    db->commit();
+                    QMessageBox::information(this, "Confirmation", "L'ajout du client a bien été pris en compte !");
+                    done(Accepted);
+                }
+                else {
+                    db->rollback();
+                    QMessageBox::critical(this, "Erreur", "Un problème est survenu lors de l'ajout du nouveau client.\n Veuillez re-essayer !");
+                }
+            }
+        }
+    }
 }
 
 AjouterClientWindow::~AjouterClientWindow()

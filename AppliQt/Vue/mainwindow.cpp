@@ -80,6 +80,7 @@ void MainWindow::slotAjouterClient() {
     if(ACWindow.exec()==QDialog::Accepted)
     {
         ui->statusBar->showMessage("Ajout client validé");
+        model->select();
     }
     else
     {

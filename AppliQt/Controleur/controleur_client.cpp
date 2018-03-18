@@ -5,6 +5,56 @@ Controleur_Client::Controleur_Client()
     query = QSqlQuery(*(Controller_BD::getInstance()->getBD()));
 }
 
+bool Controleur_Client::ClientExiste(Client & cl) {
+    bool bresult;
+
+    query.prepare("SELECT Nom, Prenom FROM TClient WHERE Nom LIKE :nom AND Prenom LIKE :prenom");
+    query.bindValue(":nom", cl.getNom());
+    query.bindValue(":prenom", cl.getPrenom());
+
+    if(!query.exec()) {
+        qDebug() << query.lastError();
+    }
+
+    if (query.next()) {
+        bresult = true;
+    }
+    return bresult;
+}
+
+bool Controleur_Client::AjouterClient(Client & cl) {
+    query.prepare("INSERT INTO TClient (Nom, Prenom, Adresse, Ville, CP, Commentaire, Tel, DateRdv, DureeRdv, Priorite) "
+                  "VALUES (:nom, :prenom, :adresse, :ville, :cp, :comm, :tel, :date, :duree, :prio)");
+    query.bindValue(":nom", cl.getNom());
+    query.bindValue(":prenom", cl.getPrenom());
+    query.bindValue(":adresse", cl.getAdresse());
+    query.bindValue(":ville", cl.getVille());
+    query.bindValue(":cp", cl.getCP());
+    query.bindValue(":comm", cl.getCommentaires());
+    query.bindValue(":tel", cl.getTelephone());
+    query.bindValue(":date", cl.getDateRDV());
+    query.bindValue(":duree", cl.getDureeRDV());
+    query.bindValue(":prio", cl.getPriorite());
+    if(!query.exec()) {
+        qDebug() << query.lastError();
+        return false;
+    }
+    return true;
+}
+
+bool Controleur_Client::AjouterRDVClient(int idClient, int idRessource) {
+    query.prepare("INSERT INTO TRdv (IdClient, IdRessource) "
+                  "VALUES (:idC, :idR)");
+    query.bindValue(":idC", idClient);
+    query.bindValue(":idR", idRessource);
+
+    if(!query.exec()) {
+        qDebug() << query.lastError();
+        return false;
+    }
+    return true;
+}
+
 vector<Client>* Controleur_Client::GetListeClient() {
     if(!query.exec("SELECT * FROM TClient")) {
         qDebug() << query.lastError().text();
@@ -29,13 +79,23 @@ vector<Client>* Controleur_Client::GetListeClient() {
                      query.value(5).toInt(),
                      query.value(8).toString(),
                      query.value(9).toInt(),query.value(10).toInt(),
-                     vecId,
                      query.value(6).toString(),
                      query.value(7).toInt());
        client.setId(query.value(0).toInt());
+       client.setIdRessources(vecId);
         vecClient->push_back(client);
     }
     return vecClient;
+}
+
+int Controleur_Client::NbClient() {
+    if(!query.exec("SELECT COUNT(*) FROM TClient")) {
+        qDebug() << query.lastError().text();
+    }
+    if(query.next()) {
+        return query.value(0).toInt();
+    }
+    return 0;
 }
 
 Controleur_Client::~Controleur_Client() {

@@ -18,12 +18,13 @@ class Client
     int int_dureeRDV;
     int int_priorite;
     std::vector<int> vec_int_idressource;
+    std::vector<QString> vec_qstring_idressource;
     QString str_commentaires;
     int int_telephone;
 
     public:
 
-    Client(QString nom, QString prenom, QString adresse, QString ville, int codepostal, QString jour, int duree, int priorite, std::vector<int> ressources, QString commentaires, int telephone);
+    Client(QString nom, QString prenom, QString adresse, QString ville, int codepostal, QString jour, int duree, int priorite, QString commentaires, int telephone);
 
     int getId();
     QString getNom();
@@ -35,12 +36,16 @@ class Client
     int getDureeRDV();
     int getPriorite();
     std::vector<int> getIdRessources();
+    std::vector<QString> getNomRessources();
     QString getCommentaires();
     int getTelephone();
 
     void setId(int id);
+    void setIdRessources(std::vector<int> idRessources);
+    void setNomRessources(std::vector<QString> nomRessources);
 
-
+    bool IdRessourcesIsEmpty();
+    bool NomRessourcesIsEmpty();
 };
 
 #endif // CLIENT_H

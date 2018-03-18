@@ -1,6 +1,6 @@
 #include "client.h"
 
-Client::Client(QString nom, QString prenom, QString adresse, QString ville, int codepostal, QString date, int duree, int priorite, std::vector<int> ressources, QString commentaires, int telephone)
+Client::Client(QString nom, QString prenom, QString adresse, QString ville, int codepostal, QString date, int duree, int priorite, QString commentaires, int telephone)
 {
     str_nom = nom;
     str_prenom = prenom;
@@ -10,7 +10,6 @@ Client::Client(QString nom, QString prenom, QString adresse, QString ville, int 
     str_dateRDV = date;
     int_dureeRDV = duree;
     int_priorite = priorite;
-    vec_int_idressource = ressources;
     str_commentaires = commentaires;
     int_telephone = telephone;
 }
@@ -65,4 +64,26 @@ int Client::getTelephone() {
 
 void Client::setId(int id) {
     int_id = id;
+}
+
+void Client::setIdRessources(std::vector<int> idRessources) {
+    vec_int_idressource = idRessources;
+}
+
+void Client::setNomRessources(std::vector<QString> nomRessources) {
+    vec_qstring_idressource = nomRessources;
+}
+
+bool Client::IdRessourcesIsEmpty() {
+    if (vec_int_idressource.size() == 0)
+        return true;
+    else
+        return false;
+}
+
+bool Client::NomRessourcesIsEmpty() {
+    if (vec_qstring_idressource.size() == 0)
+        return true;
+    else
+        return false;
 }

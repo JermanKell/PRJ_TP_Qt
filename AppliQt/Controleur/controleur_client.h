@@ -12,31 +12,17 @@ class Controleur_Client
 private:
     QSqlQuery query;
 
-    inline bool ClientExiste(Client & cl) {
-        bool bresult;
-
-        query.prepare("SELECT Nom, Prenom FROM TClient WHERE Nom LIKE :nom AND Prenom LIKE :prenom");
-        query.bindValue(":nom", cl.getNom());
-        query.bindValue(":prenom", cl.getPrenom());
-
-        if(!query.exec()) {
-            qDebug() << query.lastError();
-        }
-
-        if (query.next()) {
-            bresult = true;
-        }
-        return bresult;
-    }
-
 public:
     Controleur_Client();
     ~Controleur_Client();
 
-    bool AjouterClient();
+    bool ClientExiste(Client & cl);
+    bool AjouterClient(Client & cl);
+    bool AjouterRDVClient(int idClient, int idRessource);
     bool ModifierClient();
     bool SupprimerClient();
     vector<Client>* GetListeClient();
+    int NbClient();
 };
 
 #endif // CONTROLEUR_CLIENT_H

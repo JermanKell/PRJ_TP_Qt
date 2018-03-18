@@ -16,18 +16,18 @@ class AjouterClientWindow : public QDialog
     public:
         explicit AjouterClientWindow(Controleur_Client *controleur_c, Controleur_Personnel *controleur_p, QWidget *parent = 0);
         ~AjouterClientWindow();
-        void RemplirListWidgetRessources();
-        bool ControleData();
 
     private slots:
-        void slotAjouterClient();
-        void reject();
         void accept();
 
     private:
         Ui::AjouterClientWindow *ui;
         Controleur_Client *controleur_client;
         Controleur_Personnel *controleur_personnel;
+
+        void InitialiseGraphique();
+        void RemplirListWidgetRessources();
+        bool ControleData();
 };
 
 #endif // AJOUTERCLIENTWINDOW_H
