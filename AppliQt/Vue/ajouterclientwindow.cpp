@@ -15,7 +15,8 @@ AjouterClientWindow::AjouterClientWindow(Controleur_Client *controleur_c, Contro
     ui->lineEdit_CodePostal->setValidator(new QDoubleValidator(0, 99999, 5, this));
     ui->lineEdit_Duree->setValidator(new QIntValidator(0, 600, this));
     ui->lineEdit_Priorite->setValidator(new QIntValidator(1, 5, this));
-    ui->lineEdit_Telephone->setValidator( new QIntValidator(0, 999999999999, this) );
+    ui->lineEdit_Telephone->setValidator(new QDoubleValidator(0, 9999999999, 10, this));
+    ui->dateEdit_dateRDV->setMinimumDate(QDate::currentDate());
 
     QObject::connect(ui->QDialog_btn_ValiderAjoutClient, SIGNAL(rejected()), this, SLOT(close()));
     QObject::connect(ui->QDialog_btn_ValiderAjoutClient, SIGNAL(accepted()), this, SLOT(slotAjouterClient()));
@@ -32,43 +33,66 @@ void AjouterClientWindow::RemplirListWidgetRessources(){
      delete vecPersonnel;
  }
 
-void AjouterClientWindow::slotAjouterClient() {
+bool AjouterClientWindow::ControleData() {
     bool bValide = true;
     unsigned int uiCountChecked = 0;
 
     if(ui->lineEdit_Nom->text().isEmpty()) {
         bValide = false;
-        ui->lineEdit_Nom->setStyleSheet("border: 1px solid red");
+        ui->lineEdit_Nom->setStyleSheet("border: 2px solid red");
+    }
+    else {
+        ui->lineEdit_Nom->setStyleSheet(styleSheet());
     }
     if(ui->lineEdit_Prenom->text().isEmpty()) {
         bValide = false;
-        ui->lineEdit_Prenom->setStyleSheet("border: 1px solid red");
+        ui->lineEdit_Prenom->setStyleSheet("border: 2px solid red");
+    }
+    else {
+        ui->lineEdit_Prenom->setStyleSheet(styleSheet());
     }
     if(ui->lineEdit_Adresse->text().isEmpty()) {
         bValide = false;
-        ui->lineEdit_Adresse->setStyleSheet("border: 1px solid red");
+        ui->lineEdit_Adresse->setStyleSheet("border: 2px solid red");
+    }
+    else {
+        ui->lineEdit_Adresse->setStyleSheet(styleSheet());
     }
     if(ui->lineEdit_CodePostal->text().count() != 5) {
         bValide = false;
-        ui->lineEdit_CodePostal->setStyleSheet("border: 1px solid red");
+        ui->lineEdit_CodePostal->setStyleSheet("border: 2px solid red");
+    }
+    else {
+        ui->lineEdit_CodePostal->setStyleSheet(styleSheet());
     }
     if(ui->lineEdit_Duree->text().isEmpty()) {
         bValide = false;
-        ui->lineEdit_Duree->setStyleSheet("border: 1px solid red");
+        ui->lineEdit_Duree->setStyleSheet("border: 2px solid red");
+    }
+    else {
+        ui->lineEdit_Duree->setStyleSheet(styleSheet());
     }
     if(ui->lineEdit_Priorite->text().isEmpty()) {
         bValide = false;
-        ui->lineEdit_Priorite->setStyleSheet("border: 1px solid red");
+        ui->lineEdit_Priorite->setStyleSheet("border: 2px solid red");
+    }
+    else {
+        ui->lineEdit_Priorite->setStyleSheet(styleSheet());
     }
     if(ui->lineEdit_Ville->text().isEmpty()) {
         bValide = false;
-        ui->lineEdit_Ville->setStyleSheet("border: 1px solid red");
+        ui->lineEdit_Ville->setStyleSheet("border: 2px solid red");
     }
-    if(!ui->lineEdit_Telephone->text().isEmpty() && ui->lineEdit_Telephone->text().size() < 10) {
+    else {
+        ui->lineEdit_Ville->setStyleSheet(styleSheet());
+    }
+    if(!ui->lineEdit_Telephone->text().isEmpty() && ui->lineEdit_Telephone->text().size() != 10) {
         bValide = false;
-        ui->lineEdit_Telephone->setStyleSheet("border: 1px solid red");
+        ui->lineEdit_Telephone->setStyleSheet("border: 2px solid red");
     }
-
+    else {
+        ui->lineEdit_Telephone->setStyleSheet(styleSheet());
+    }
     for(int iBoucle = 0; iBoucle < ui->listWidget_Ressources->count(); iBoucle++) {
         if(ui->listWidget_Ressources->item(iBoucle)->checkState() == Qt::Checked) {
             uiCountChecked++;
@@ -76,8 +100,16 @@ void AjouterClientWindow::slotAjouterClient() {
     }
     if(uiCountChecked == 0) {
         bValide = false;
-        ui->listWidget_Ressources->setStyleSheet("border: 1px solid red");
+        ui->listWidget_Ressources->setStyleSheet("border: 2px solid red");
     }
+    else {
+        ui->listWidget_Ressources->setStyleSheet(styleSheet());
+        bValide = false;
+    }
+    return bValide;
+}
+
+void AjouterClientWindow::slotAjouterClient() {
 
     /*vector<int> vec_ressources;
     for(unsigned int uiBoucle=0; uiBoucle < ui->listWidget_Ressources->count(); uiBoucle++) {
@@ -92,6 +124,18 @@ void AjouterClientWindow::slotAjouterClient() {
     }
     else QMessageBox::information(this, "Warning", "Une erreur est survenue lors de l'ajout du personnel !");*/
 
+}
+
+void AjouterClientWindow::reject()
+{
+    qDebug() << Q_FUNC_INFO << "QDialog::reject()";
+    done(Rejected);
+}
+
+void AjouterClientWindow::accept()
+{
+    qDebug() << Q_FUNC_INFO << "QDialog::reject()";
+    //done(Accepted);
 }
 
 AjouterClientWindow::~AjouterClientWindow()

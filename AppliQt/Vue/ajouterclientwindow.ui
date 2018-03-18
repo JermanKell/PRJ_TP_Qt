@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>435</width>
-    <height>433</height>
+    <width>378</width>
+    <height>673</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -148,11 +148,21 @@
        </property>
       </widget>
      </item>
-     <item row="5" column="1">
-      <widget class="QLineEdit" name="lineEdit_DateRDV"/>
-     </item>
      <item row="6" column="1">
-      <widget class="QLineEdit" name="lineEdit_Duree"/>
+      <widget class="QLineEdit" name="lineEdit_Duree">
+       <property name="inputMethodHints">
+        <set>Qt::ImhNone</set>
+       </property>
+       <property name="text">
+        <string>60</string>
+       </property>
+       <property name="cursorPosition">
+        <number>2</number>
+       </property>
+       <property name="clearButtonEnabled">
+        <bool>false</bool>
+       </property>
+      </widget>
      </item>
      <item row="7" column="1">
       <widget class="QLineEdit" name="lineEdit_Priorite"/>
@@ -173,7 +183,34 @@
      <item row="10" column="1">
       <widget class="QLineEdit" name="lineEdit_Telephone">
        <property name="maxLength">
-        <number>12</number>
+        <number>10</number>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QDateEdit" name="dateEdit_dateRDV">
+       <property name="maximumDateTime">
+        <datetime>
+         <hour>23</hour>
+         <minute>59</minute>
+         <second>59</second>
+         <year>2099</year>
+         <month>12</month>
+         <day>31</day>
+        </datetime>
+       </property>
+       <property name="minimumDateTime">
+        <datetime>
+         <hour>0</hour>
+         <minute>0</minute>
+         <second>0</second>
+         <year>2018</year>
+         <month>3</month>
+         <day>15</day>
+        </datetime>
+       </property>
+       <property name="currentSectionIndex">
+        <number>0</number>
        </property>
       </widget>
      </item>
