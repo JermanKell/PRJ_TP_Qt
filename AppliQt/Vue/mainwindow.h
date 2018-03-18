@@ -32,6 +32,8 @@ class MainWindow : public QMainWindow
         Controleur_Client *controleur_client;
         Controleur_Personnel *controleur_personnel;
 
+        void InitialiseTableView();
+
 };
 
 #endif // MAINWINDOW_H

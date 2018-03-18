@@ -23,6 +23,8 @@ public:
     bool ModifierClient();
     bool SupprimerClient();
     vector<Client>* GetListeClient();
+    Client* GetClient(int idClient);
+    vector<int>* GetListeIdRessourcesClient(int idClient);
     int NbClient();
     int MaxIdClient();
 };

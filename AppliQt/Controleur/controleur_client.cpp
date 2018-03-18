@@ -99,6 +99,41 @@ vector<Client>* Controleur_Client::GetListeClient() {
     return vecClient;
 }
 
+Client* Controleur_Client::GetClient(int idClient) {
+    query.prepare("SELECT * FROM TClient WHERE Id = :id");
+    query.bindValue(":id", idClient);
+
+    if(!query.exec()) {
+        qDebug() << query.lastError();
+    }
+
+    if (query.next()) {
+        Client *client = new Client(query.value(1).toString(), query.value(2).toString(), query.value(3).toString(), query.value(4).toString(),
+                                    query.value(5).toInt(),
+                                    query.value(8).toString(),
+                                    query.value(9).toInt(),query.value(10).toInt(),
+                                    query.value(6).toString(),
+                                    query.value(7).toInt());
+       client->setId(query.value(0).toInt());
+       return client;
+    }
+    return nullptr;
+}
+
+vector<int>* Controleur_Client::GetListeIdRessourcesClient(int idClient) {
+    query.prepare("SELECT IdRessource FROM TRdv WHERE IdClient = :idC");
+    query.bindValue(":idC", idClient);
+
+    if(!query.exec()) {
+        qDebug() << query.lastError();
+    }
+    vector<int> *vecIdRessources = new vector<int>();
+    while (query.next()) {
+        vecIdRessources->push_back(query.value(0).toInt());
+    }
+    return vecIdRessources;
+}
+
 int Controleur_Client::NbClient() {
     if(!query.exec("SELECT COUNT(*) FROM TClient")) {
         qDebug() << query.lastError().text();

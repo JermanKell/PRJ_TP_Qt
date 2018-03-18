@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "ajouterclientwindow.h"
+#include "modifierclientwindow.h"
 #include "ajouterpersonnelwindow.h"
 #include "aproposwindow.h"
 #include "Controleur/controleur_BD.h"
@@ -16,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     controleur_personnel = new Controleur_Personnel();
 
     ui->statusBar->showMessage("Connecté");
+    InitialiseTableView();
 
     //Evenements MenuBar
     QObject::connect(ui->actionQuitter, SIGNAL(triggered()), this, SLOT(slotQuit()));
@@ -30,18 +32,6 @@ MainWindow::MainWindow(QWidget *parent) :
     //Evenements TableViewClient
     QObject::connect(ui->btn_ModifierClient, SIGNAL(clicked()), this, SLOT(slotModifierClient()));
     QObject::connect(ui->btn_SupprimerClient, SIGNAL(clicked()), this, SLOT(slotSupprimerClient()));
-
-    model = new QSqlTableModel(this, *Controller_BD::getInstance()->getBD());
-    model->setTable("TClient");
-    model->select();
-    ui->tableViewClient->setModel(model);
-    ui->tableViewClient->hideColumn(3);
-    ui->tableViewClient->hideColumn(4);
-    ui->tableViewClient->hideColumn(5);
-    ui->tableViewClient->hideColumn(6);
-    ui->tableViewClient->hideColumn(7);
-    ui->tableViewClient->hideColumn(9);
-    ui->tableViewClient->hideColumn(10);
 
 
     //TableView
@@ -73,6 +63,20 @@ MainWindow::~MainWindow()
     delete ui;
     delete controleur_client;
     delete controleur_personnel;
+}
+
+void MainWindow::InitialiseTableView() {
+    model = new QSqlTableModel(this, *Controller_BD::getInstance()->getBD());
+    model->setTable("TClient");
+    model->select();
+    ui->tableViewClient->setModel(model);
+    ui->tableViewClient->hideColumn(3);
+    ui->tableViewClient->hideColumn(4);
+    ui->tableViewClient->hideColumn(5);
+    ui->tableViewClient->hideColumn(6);
+    ui->tableViewClient->hideColumn(7);
+    ui->tableViewClient->hideColumn(9);
+    ui->tableViewClient->hideColumn(10);
 }
 
 void MainWindow::slotAjouterClient() {
@@ -112,7 +116,17 @@ void MainWindow::slotModifierClient() {
     }
     else
     {
-
+       Client *client = controleur_client->GetClient(model->index(ui->tableViewClient->currentIndex().row(), 0).data().toInt());
+       ModifierClientWindow MCWindow(client, controleur_client, controleur_personnel);
+        if(MCWindow.exec()==QDialog::Accepted)
+        {
+            ui->statusBar->showMessage("Ajout client validé");
+            model->selectRow(ui->tableViewClient->currentIndex().row());
+        }
+        else
+        {
+            ui->statusBar->showMessage("Modif client annulé");
+        }
     }
 }
 

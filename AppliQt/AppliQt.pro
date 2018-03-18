@@ -39,6 +39,7 @@ SOURCES += \
     Vue/mainwindow.cpp \
     Vue/connexionwindow.cpp \
     Vue/ajouterclientwindow.cpp \
+    Vue/modifierclientwindow.cpp \
     Vue/ajouterpersonnelwindow.cpp \
     Vue/aproposwindow.cpp \
     #Controleur
@@ -56,6 +57,7 @@ HEADERS += \
     Vue/mainwindow.h \
     Vue/connexionwindow.h \
     Vue/ajouterclientwindow.h \
+    Vue/modifierclientwindow.h \
     Vue/ajouterpersonnelwindow.h \
     Vue/aproposwindow.h \
     #Controleur
@@ -69,5 +71,6 @@ FORMS += \
     Vue/mainwindow.ui \
     Vue/connexionwindow.ui \
     Vue/ajouterclientwindow.ui \
+    Vue/modifierclientwindow.ui \
     Vue/ajouterpersonnelwindow.ui \
     Vue/aproposwindow.ui
