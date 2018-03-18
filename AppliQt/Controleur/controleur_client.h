@@ -19,10 +19,12 @@ public:
     bool ClientExiste(Client & cl);
     bool AjouterClient(Client & cl);
     bool AjouterRDVClient(int idClient, int idRessource);
+    bool SupprimerRDVClient(int idClient);
     bool ModifierClient();
     bool SupprimerClient();
     vector<Client>* GetListeClient();
     int NbClient();
+    int MaxIdClient();
 };
 
 #endif // CONTROLEUR_CLIENT_H

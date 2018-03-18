@@ -55,6 +55,17 @@ bool Controleur_Client::AjouterRDVClient(int idClient, int idRessource) {
     return true;
 }
 
+bool Controleur_Client::SupprimerRDVClient(int idClient) {
+    query.prepare("DELETE FROM TRdv WHERE IdClient = :idC");
+    query.bindValue(":idC", idClient);
+
+    if(!query.exec()) {
+        qDebug() << query.lastError();
+        return false;
+    }
+    return true;
+}
+
 vector<Client>* Controleur_Client::GetListeClient() {
     if(!query.exec("SELECT * FROM TClient")) {
         qDebug() << query.lastError().text();
@@ -98,6 +109,15 @@ int Controleur_Client::NbClient() {
     return 0;
 }
 
+int Controleur_Client::MaxIdClient() {
+    if(!query.exec("SELECT MAX(Id) FROM TClient")) {
+        qDebug() << query.lastError().text();
+    }
+    if(query.next()) {
+        return query.value(0).toInt();
+    }
+    return 0;
+}
 Controleur_Client::~Controleur_Client() {
 
 }

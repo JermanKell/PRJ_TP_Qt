@@ -146,7 +146,7 @@ void AjouterClientWindow::accept() //SURCHARGE POUR EMPECHER LA FENETRE DE SE FE
                 {
                     bErreurSQL = true;
                 }
-                int idNouveauClient = controleur_client->NbClient();
+                int idNouveauClient = controleur_client->MaxIdClient();
 
                 vector<Personnel>* vecPersonnel = controleur_personnel->GetListePersonnel();
                 for(unsigned int uiBoucleR=0; uiBoucleR < vecRessources.size(); uiBoucleR++)

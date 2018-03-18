@@ -123,8 +123,38 @@ void MainWindow::slotSupprimerClient() {
     }
     else
     {
-        //model->removeRow(currentIndex.row());
+        int reponse = QMessageBox::question(this, "Confirmation", " Confirmer la suppression définitive de ce client?", QMessageBox ::Yes | QMessageBox::No);
+        if (reponse == QMessageBox::Yes)
+        {
+            bool bErreurSQL = false;
+            QSqlDatabase *db = Controller_BD::getInstance()->getBD();
+            db->transaction();
+            if (!controleur_client->SupprimerRDVClient(model->index(ui->tableViewClient->currentIndex().row(), 0).data().toInt())) {
+                bErreurSQL = true;
+            }
+            else {
+                if(!model->removeRow(ui->tableViewClient->currentIndex().row())) {
+                    bErreurSQL = true;
+                }
+            }
+
+            if(bErreurSQL) {
+                db->rollback();
+                ui->statusBar->showMessage("Supression client annulée du à une erreur");
+            }
+            else {
+                db->commit();
+                model->select();
+                ui->statusBar->showMessage("Supression client faite");
+            }
+        }
+        else
+        {
+            QMessageBox::information(this, "Information?", "La supression du client a été annulée");
+            ui->statusBar->showMessage("Supression client annulée");
+        }
     }
+
 }
 
 void MainWindow::slotQuit() {
