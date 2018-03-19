@@ -5,6 +5,7 @@
 #include <qstring.h>
 #include <QVariant>
 #include <QSqlQuery>
+#include <QSqlTableModel>
 #include "controleur_BD.h"
 
 class Controleur_Client
@@ -27,6 +28,9 @@ public:
     vector<int>* GetListeIdRessourcesClient(int idClient);
     int NbClient();
     int MaxIdClient();
+    QSqlTableModel* RechercheClient(int id, QString nom, QString prenom, QString dateDebut, QString dateFin);
+    QString DateMinimum();
+    QString DateMaximum();
 };
 
 #endif // CONTROLEUR_CLIENT_H

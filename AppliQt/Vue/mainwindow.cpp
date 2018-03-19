@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     controleur_personnel = new Controleur_Personnel();
 
     ui->statusBar->showMessage("Connecté");
-    InitialiseTableView();
+    InitialiseGraphique();
 
     //Evenements MenuBar
     QObject::connect(ui->actionQuitter, SIGNAL(triggered()), this, SLOT(slotQuit()));
@@ -32,6 +32,11 @@ MainWindow::MainWindow(QWidget *parent) :
     //Evenements TableViewClient
     QObject::connect(ui->btn_ModifierClient, SIGNAL(clicked()), this, SLOT(slotModifierClient()));
     QObject::connect(ui->btn_SupprimerClient, SIGNAL(clicked()), this, SLOT(slotSupprimerClient()));
+    QObject::connect(ui->lineEdit_IdRecherche, SIGNAL(textChanged(const QString &)), this, SLOT(slotMiseAJourTableView()));
+    QObject::connect(ui->lineEdit_NomRecherche, SIGNAL(textChanged(const QString &)), this, SLOT(slotMiseAJourTableView()));
+    QObject::connect(ui->lineEdit_PrenomRecherche, SIGNAL(textChanged(const QString &)), this, SLOT(slotMiseAJourTableView()));
+    QObject::connect(ui->dateEditMini, SIGNAL(dateChanged(const QDate &)), this, SLOT(slotMiseAJourTableView()));
+    QObject::connect(ui->dateEditMax, SIGNAL(dateChanged(const QDate &)), this, SLOT(slotMiseAJourTableView()));
 
 }
 
@@ -43,11 +48,21 @@ MainWindow::~MainWindow()
     delete controleur_personnel;
 }
 
+void MainWindow::InitialiseGraphique() {
+    ui->lineEdit_IdRecherche->setValidator(new QDoubleValidator(0, 999999999, 9, this));
+    ui->dateEditMini->setDate(QDate::fromString(controleur_client->DateMinimum(), "yyyy-MM-dd"));
+    ui->dateEditMax->setDate(QDate::fromString(controleur_client->DateMaximum(), "yyyy-MM-dd"));
+    InitialiseTableView();
+
+    QFont font;
+    font.setCapitalization(QFont::Capitalize);
+     ui->lineEdit_NomRecherche->setFont(font);
+     ui->lineEdit_PrenomRecherche->setFont(font);
+}
+
 void MainWindow::InitialiseTableView() {
-    model = new QSqlTableModel(this, *Controller_BD::getInstance()->getBD());
-    model->setTable("TClient");
-    model->select();
-    ui->tableViewClient->setModel(model);
+    model = nullptr;
+    slotMiseAJourTableView();
     ui->tableViewClient->hideColumn(3);
     ui->tableViewClient->hideColumn(4);
     ui->tableViewClient->hideColumn(5);
@@ -62,7 +77,7 @@ void MainWindow::slotAjouterClient() {
     if(ACWindow.exec()==QDialog::Accepted)
     {
         ui->statusBar->showMessage("Ajout client validé");
-        model->select();
+        slotMiseAJourTableView();
     }
     else
     {
@@ -99,7 +114,7 @@ void MainWindow::slotModifierClient() {
         if(MCWindow.exec()==QDialog::Accepted)
         {
             ui->statusBar->showMessage("Modification client validé");
-            model->selectRow(ui->tableViewClient->currentIndex().row());
+            slotMiseAJourTableView();
         }
         else
         {
@@ -149,7 +164,20 @@ void MainWindow::slotSupprimerClient() {
 
 }
 
+void MainWindow::slotMiseAJourTableView() {
+    QSqlTableModel *nouveauModel = controleur_client->RechercheClient(ui->lineEdit_IdRecherche->text().toInt(), ui->lineEdit_NomRecherche->text(), ui->lineEdit_PrenomRecherche->text(), ui->dateEditMini->text(), ui->dateEditMax->text());
+    ui->tableViewClient->setModel(nouveauModel);
+    delete model;
+    model = nouveauModel;
+}
+
 void MainWindow::slotQuit() {
     Controller_BD::kill();
     qApp->quit();
+}
+
+void MainWindow::closeEvent (QCloseEvent *event)
+{
+    slotQuit();
+    event->accept();
 }

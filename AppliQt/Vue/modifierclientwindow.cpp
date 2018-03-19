@@ -20,6 +20,12 @@ void ModifierClientWindow::InitialiseGraphique() {
     ui->lineEdit_Priorite->setValidator(new QIntValidator(1, 5, this));
     ui->lineEdit_Telephone->setValidator(new QDoubleValidator(0, 999999999, 9, this));
 
+    QFont font;
+    font.setCapitalization(QFont::Capitalize);
+    ui->lineEdit_Nom->setFont(font);
+    ui->lineEdit_Prenom->setFont(font);
+    ui->lineEdit_Ville->setFont(font);
+
     RemplirListWidgetRessources();
 
     ui->lineEdit_Nom->setText(client->getNom());
@@ -89,7 +95,7 @@ bool ModifierClientWindow::ControleData() {
     else {
         ui->lineEdit_Adresse->setStyleSheet(styleSheet());
     }
-    if(ui->lineEdit_CodePostal->text().count() != 5) {
+    if(ui->lineEdit_CodePostal->text().count() != 5 || ui->lineEdit_CodePostal->text().toInt() == 0) {
         bValide = false;
         ui->lineEdit_CodePostal->setStyleSheet("border: 2px solid red");
     }

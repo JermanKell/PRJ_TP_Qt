@@ -183,6 +183,41 @@ int Controleur_Client::MaxIdClient() {
     }
     return 0;
 }
+
+QSqlTableModel* Controleur_Client::RechercheClient(int id, QString nom, QString prenom, QString dateDebut, QString dateFin) {
+      QSqlTableModel * model = new QSqlTableModel(NULL, *Controller_BD::getInstance()->getBD());
+      model->setTable("TClient");
+      model->select();
+      if(nom.count() != 0) {
+          nom = nom.append('%');
+      }
+      if(prenom.count() != 0) {
+          prenom = prenom.append('%');
+      }
+
+     model->setFilter(QString("id = "+ QString::number(id) +
+                               " OR nom LIKE '"+ nom +
+                               "' OR prenom LIKE '"+ prenom +
+                               "' OR dateRdv BETWEEN '"+ dateDebut +"' and '"+ dateFin +"'"));
+      return model;
+}
+
+QString Controleur_Client::DateMinimum() {
+    if(!query.exec("SELECT MIN(DateRdv) FROM TClient")) {
+        qDebug() << query.lastError().text();
+    }
+    query.next();
+    return query.value(0).toString();
+}
+
+QString Controleur_Client::DateMaximum() {
+    if(!query.exec("SELECT MAX(DateRdv) FROM TClient")) {
+        qDebug() << query.lastError().text();
+    }
+    query.next();
+    return query.value(0).toString();
+}
+
 Controleur_Client::~Controleur_Client() {
 
 }

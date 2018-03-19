@@ -31,11 +31,11 @@
          <attribute name="title">
           <string>Client</string>
          </attribute>
-         <widget class="QLabel" name="lab_Nom">
+         <widget class="QLabel" name="lab_NomRecherche">
           <property name="geometry">
            <rect>
-            <x>20</x>
-            <y>270</y>
+            <x>70</x>
+            <y>260</y>
             <width>67</width>
             <height>17</height>
            </rect>
@@ -44,31 +44,31 @@
            <string>Nom :</string>
           </property>
          </widget>
-         <widget class="QLineEdit" name="lineEdit_Nom">
+         <widget class="QLineEdit" name="lineEdit_NomRecherche">
           <property name="geometry">
            <rect>
-            <x>60</x>
-            <y>270</y>
-            <width>181</width>
-            <height>27</height>
+            <x>110</x>
+            <y>260</y>
+            <width>131</width>
+            <height>21</height>
            </rect>
           </property>
          </widget>
-         <widget class="QLineEdit" name="lineEdit_Prenom">
+         <widget class="QLineEdit" name="lineEdit_PrenomRecherche">
           <property name="geometry">
            <rect>
-            <x>60</x>
-            <y>300</y>
-            <width>181</width>
-            <height>27</height>
+            <x>110</x>
+            <y>290</y>
+            <width>131</width>
+            <height>21</height>
            </rect>
           </property>
          </widget>
-         <widget class="QLabel" name="lab_Prenom">
+         <widget class="QLabel" name="lab_PrenomRecherche">
           <property name="geometry">
            <rect>
-            <x>10</x>
-            <y>300</y>
+            <x>60</x>
+            <y>290</y>
             <width>67</width>
             <height>17</height>
            </rect>
@@ -77,24 +77,24 @@
            <string>Prénom :</string>
           </property>
          </widget>
-         <widget class="QLabel" name="lab_Date">
+         <widget class="QLabel" name="lab_DateMiniRecherche">
           <property name="geometry">
            <rect>
-            <x>20</x>
-            <y>330</y>
-            <width>67</width>
-            <height>17</height>
+            <x>80</x>
+            <y>320</y>
+            <width>31</width>
+            <height>20</height>
            </rect>
           </property>
           <property name="text">
-           <string>Date :</string>
+           <string>De :</string>
           </property>
          </widget>
-         <widget class="QLabel" name="label_Id">
+         <widget class="QLabel" name="label_IdRecherche">
           <property name="geometry">
            <rect>
-            <x>30</x>
-            <y>240</y>
+            <x>80</x>
+            <y>230</y>
             <width>67</width>
             <height>17</height>
            </rect>
@@ -103,23 +103,13 @@
            <string>Id :</string>
           </property>
          </widget>
-         <widget class="QDateTimeEdit" name="dateTimeEdit">
+         <widget class="QLineEdit" name="lineEdit_IdRecherche">
           <property name="geometry">
            <rect>
-            <x>60</x>
-            <y>330</y>
-            <width>181</width>
-            <height>27</height>
-           </rect>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="lineEdit_Id">
-          <property name="geometry">
-           <rect>
-            <x>60</x>
+            <x>110</x>
             <y>230</y>
-            <width>181</width>
-            <height>27</height>
+            <width>131</width>
+            <height>21</height>
            </rect>
           </property>
          </widget>
@@ -188,6 +178,73 @@
           </property>
           <property name="text">
            <string>Supprimer</string>
+          </property>
+         </widget>
+         <widget class="QDateEdit" name="dateEditMini">
+          <property name="geometry">
+           <rect>
+            <x>110</x>
+            <y>320</y>
+            <width>131</width>
+            <height>22</height>
+           </rect>
+          </property>
+          <property name="maximumDate">
+           <date>
+            <year>2099</year>
+            <month>12</month>
+            <day>31</day>
+           </date>
+          </property>
+          <property name="minimumDate">
+           <date>
+            <year>1999</year>
+            <month>1</month>
+            <day>1</day>
+           </date>
+          </property>
+          <property name="displayFormat">
+           <string>yyyy-MM-dd</string>
+          </property>
+         </widget>
+         <widget class="QDateEdit" name="dateEditMax">
+          <property name="geometry">
+           <rect>
+            <x>110</x>
+            <y>350</y>
+            <width>131</width>
+            <height>22</height>
+           </rect>
+          </property>
+          <property name="maximumDate">
+           <date>
+            <year>2099</year>
+            <month>12</month>
+            <day>31</day>
+           </date>
+          </property>
+          <property name="minimumDate">
+           <date>
+            <year>1999</year>
+            <month>1</month>
+            <day>1</day>
+           </date>
+          </property>
+          <property name="displayFormat">
+           <string>yyyy-MM-dd</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lab_DateMaxRecherche">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>350</y>
+            <width>31</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>A :</string>
           </property>
          </widget>
         </widget>

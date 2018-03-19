@@ -24,6 +24,8 @@ public slots:
 
     private:
         Ui::ConnexionWindow *ui;
+
+        void InitialiseGraphique();
 };
 
 #endif // CONNEXIONWINDOW_H
