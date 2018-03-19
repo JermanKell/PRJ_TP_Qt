@@ -30,6 +30,7 @@ class ModifierClientWindow : public QDialog
         void InitialiseGraphique();
         void RemplirListWidgetRessources();
         bool ControleData();
+        void MajClient();
 };
 
 #endif // MODIFIERCLIENTWINDOW_H

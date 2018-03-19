@@ -35,14 +35,24 @@ class Client
     QString getDateRDV();
     int getDureeRDV();
     int getPriorite();
-    std::vector<int> getIdRessources();
-    std::vector<QString> getNomRessources();
+    std::vector<int> & getIdRessources();
+    std::vector<QString> & getNomRessources();
     QString getCommentaires();
     int getTelephone();
 
     void setId(int id);
+    void setNom(QString nom);
+    void setPrenom(QString prenom);
+    void setAdresse(QString adresse);
+    void setVille(QString ville);
+    void setCP(int cp);
+    void setDateRDV(QString dateRDV);
+    void setDureeRDV(int dureeRDV);
+    void setPriorite(int priorite);
     void setIdRessources(std::vector<int> idRessources);
     void setNomRessources(std::vector<QString> nomRessources);
+    void setCommentaires(QString commentaires);
+    void setTelephone(int telephone);
 
     bool IdRessourcesIsEmpty();
     bool NomRessourcesIsEmpty();

@@ -33,34 +33,12 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->btn_ModifierClient, SIGNAL(clicked()), this, SLOT(slotModifierClient()));
     QObject::connect(ui->btn_SupprimerClient, SIGNAL(clicked()), this, SLOT(slotSupprimerClient()));
 
-
-    //TableView
-   /* QStandardItemModel * model = new QStandardItemModel(0, 4, this);
-    model->setHorizontalHeaderItem(0, new QStandardItem(QString("Nom")));
-    model->setHorizontalHeaderItem(1, new QStandardItem(QString("Prenom")));
-    model->setHorizontalHeaderItem(2, new QStandardItem(QString("Date RDV")));
-    model->setHorizontalHeaderItem(3, new QStandardItem(QString("Id")));
-    ui->tableViewClient->setModel(model);
-
-    vector<Client> *vecClient = controleur_client->GetListeClient();
-
-    for(unsigned int uiBoucle=0; uiBoucle < vecClient->size(); uiBoucle++) {
-        QList<QStandardItem*> newRow;
-        QStandardItem *item_Id = new QStandardItem(vecClient->at(uiBoucle).getId());
-        QStandardItem *item_Nom = new QStandardItem(vecClient->at(uiBoucle).getNom());
-        QStandardItem *item_Prenom = new QStandardItem(vecClient->at(uiBoucle).getPrenom());
-        QStandardItem *item_DateRDV = new QStandardItem(vecClient->at(uiBoucle).getDateRDV());
-        newRow.append(item_Id);
-        newRow.append(item_Nom);
-        newRow.append(item_Prenom);
-        newRow.append(item_DateRDV);
-        model->appendRow(newRow);
-    }*/
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete model;
     delete controleur_client;
     delete controleur_personnel;
 }
@@ -120,7 +98,7 @@ void MainWindow::slotModifierClient() {
        ModifierClientWindow MCWindow(client, controleur_client, controleur_personnel);
         if(MCWindow.exec()==QDialog::Accepted)
         {
-            ui->statusBar->showMessage("Ajout client validé");
+            ui->statusBar->showMessage("Modification client validé");
             model->selectRow(ui->tableViewClient->currentIndex().row());
         }
         else

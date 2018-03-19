@@ -17,7 +17,7 @@ void AjouterClientWindow::InitialiseGraphique() {
     ui->lineEdit_CodePostal->setValidator(new QDoubleValidator(0, 99999, 5, this));
     ui->lineEdit_Duree->setValidator(new QIntValidator(0, 600, this));
     ui->lineEdit_Priorite->setValidator(new QIntValidator(1, 5, this));
-    ui->lineEdit_Telephone->setValidator(new QDoubleValidator(0, 9999999999, 10, this));
+    ui->lineEdit_Telephone->setValidator(new QDoubleValidator(0, 999999999, 9, this));
     ui->dateEdit_dateRDV->setMinimumDate(QDate::currentDate());
     RemplirListWidgetRessources();
 }
@@ -85,7 +85,7 @@ bool AjouterClientWindow::ControleData() {
     else {
         ui->lineEdit_Ville->setStyleSheet(styleSheet());
     }
-    if(!ui->lineEdit_Telephone->text().isEmpty() && ui->lineEdit_Telephone->text().size() != 10) {
+    if(!ui->lineEdit_Telephone->text().isEmpty() && ui->lineEdit_Telephone->text().size() < 9) {
         bValide = false;
         ui->lineEdit_Telephone->setStyleSheet("border: 2px solid red");
     }
@@ -135,45 +135,38 @@ void AjouterClientWindow::accept() //SURCHARGE POUR EMPECHER LA FENETRE DE SE FE
                 }
             }
             QSqlDatabase *db = Controller_BD::getInstance()->getBD();
-            if(!db->transaction())
+            db->transaction();
+            if(!controleur_client->AjouterClient(client))
             {
-                qDebug() << db->lastError();
                 bErreurSQL = true;
             }
-            else
-            {
-                if(!controleur_client->AjouterClient(client))
-                {
-                    bErreurSQL = true;
-                }
-                int idNouveauClient = controleur_client->MaxIdClient();
+            int idNouveauClient = controleur_client->MaxIdClient();
 
-                vector<Personnel>* vecPersonnel = controleur_personnel->GetListePersonnel();
-                for(unsigned int uiBoucleR=0; uiBoucleR < vecRessources.size(); uiBoucleR++)
+            vector<Personnel>* vecPersonnel = controleur_personnel->GetListePersonnel();
+            for(unsigned int uiBoucleR=0; uiBoucleR < vecRessources.size(); uiBoucleR++)
+            {
+                for(unsigned int uiBoucleP=0; uiBoucleP < vecPersonnel->size(); uiBoucleP++)
                 {
-                    for(unsigned int uiBoucleP=0; uiBoucleP < vecPersonnel->size(); uiBoucleP++)
+                    if(QString::compare(vecPersonnel->at(uiBoucleP).getNom(), vecRessources.at(uiBoucleR), Qt::CaseSensitive) == 0)
                     {
-                        if(QString::compare(vecPersonnel->at(uiBoucleP).getNom(), vecRessources.at(uiBoucleR), Qt::CaseSensitive) == 0)
+                        if(!controleur_client->AjouterRDVClient(idNouveauClient, vecPersonnel->at(uiBoucleP).getId()))
                         {
-                            if(!controleur_client->AjouterRDVClient(idNouveauClient, vecPersonnel->at(uiBoucleP).getId()))
-                            {
-                                bErreurSQL = true;
-                            }
+                            bErreurSQL = true;
                         }
                     }
                 }
-                delete vecPersonnel;
+            }
+            delete vecPersonnel;
 
-                if (!bErreurSQL)
-                {
-                    db->commit();
-                    QMessageBox::information(this, "Confirmation", "L'ajout du client a bien été pris en compte !");
-                    done(Accepted);
-                }
-                else {
-                    db->rollback();
-                    QMessageBox::critical(this, "Erreur", "Un problème est survenu lors de l'ajout du nouveau client.\n Veuillez re-essayer !");
-                }
+            if (!bErreurSQL)
+            {
+                db->commit();
+                QMessageBox::information(this, "Confirmation", "L'ajout du client a bien été pris en compte !");
+                done(Accepted);
+            }
+            else {
+                db->rollback();
+                QMessageBox::critical(this, "Erreur", "Un problème est survenu lors de l'ajout du nouveau client.\n Veuillez re-essayer !");
             }
         }
     }

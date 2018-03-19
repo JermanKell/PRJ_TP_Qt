@@ -20,7 +20,7 @@ public:
     bool AjouterClient(Client & cl);
     bool AjouterRDVClient(int idClient, int idRessource);
     bool SupprimerRDVClient(int idClient);
-    bool ModifierClient();
+    bool ModifierClient(Client & cl);
     bool SupprimerClient();
     vector<Client>* GetListeClient();
     Client* GetClient(int idClient);

@@ -6,7 +6,7 @@ Controleur_Client::Controleur_Client()
 }
 
 bool Controleur_Client::ClientExiste(Client & cl) {
-    bool bresult;
+    bool bresult = false;;
 
     query.prepare("SELECT Nom, Prenom FROM TClient WHERE Nom LIKE :nom AND Prenom LIKE :prenom");
     query.bindValue(":nom", cl.getNom());
@@ -36,6 +36,37 @@ bool Controleur_Client::AjouterClient(Client & cl) {
     query.bindValue(":duree", cl.getDureeRDV());
     query.bindValue(":prio", cl.getPriorite());
     if(!query.exec()) {
+        qDebug() << query.lastError();
+        return false;
+    }
+    return true;
+}
+
+bool Controleur_Client::ModifierClient(Client & cl) {
+    query.prepare("UPDATE TClient SET nom = :nom, "
+                   "prenom = :prenom, "
+                   "adresse = :adresse, "
+                   "ville = :ville, "
+                   "cp = :cp, "
+                   "commentaire = :commentaires, "
+                   "tel = :tel, "
+                   "dateRdv = :date, "
+                   "dureeRdv = :duree,"
+                   "priorite = :priorite "
+                   "WHERE id = :id");
+    query.bindValue(":nom", cl.getNom());
+    query.bindValue(":prenom", cl.getPrenom());
+    query.bindValue(":adresse", cl.getAdresse());
+    query.bindValue(":ville", cl.getVille());
+    query.bindValue(":cp", cl.getCP());
+    query.bindValue(":commentaires", cl.getCommentaires());
+    query.bindValue(":tel", cl.getTelephone());
+    query.bindValue(":date", cl.getDateRDV());
+    query.bindValue(":duree", cl.getDureeRDV());
+    query.bindValue(":priorite", cl.getPriorite());
+    query.bindValue(":id", cl.getId());
+    if(!query.exec()) {
+
         qDebug() << query.lastError();
         return false;
     }
@@ -106,7 +137,6 @@ Client* Controleur_Client::GetClient(int idClient) {
     if(!query.exec()) {
         qDebug() << query.lastError();
     }
-
     if (query.next()) {
         Client *client = new Client(query.value(1).toString(), query.value(2).toString(), query.value(3).toString(), query.value(4).toString(),
                                     query.value(5).toInt(),

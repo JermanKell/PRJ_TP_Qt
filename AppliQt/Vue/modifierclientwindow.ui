@@ -187,7 +187,7 @@
      <item row="10" column="1">
       <widget class="QLineEdit" name="lineEdit_Telephone">
        <property name="maxLength">
-        <number>10</number>
+        <number>9</number>
        </property>
       </widget>
      </item>
@@ -246,5 +246,38 @@
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>QDialog_btn_ValiderModifClient</sender>
+   <signal>accepted()</signal>
+   <receiver>ModifierClientWindow</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>188</x>
+     <y>652</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>188</x>
+     <y>336</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>QDialog_btn_ValiderModifClient</sender>
+   <signal>rejected()</signal>
+   <receiver>ModifierClientWindow</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>188</x>
+     <y>652</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>188</x>
+     <y>336</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
