@@ -20,7 +20,7 @@
       <item row="0" column="0">
        <widget class="QTabWidget" name="tabWidget">
         <property name="currentIndex">
-         <number>1</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="tab_planification">
          <attribute name="title">
@@ -252,6 +252,42 @@
          <attribute name="title">
           <string>Personnel</string>
          </attribute>
+         <widget class="QTreeView" name="PersView">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>10</y>
+            <width>589</width>
+            <height>192</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="PersSup">
+          <property name="geometry">
+           <rect>
+            <x>340</x>
+            <y>310</y>
+            <width>251</width>
+            <height>61</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Supprimer</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="PersModif">
+          <property name="geometry">
+           <rect>
+            <x>340</x>
+            <y>230</y>
+            <width>251</width>
+            <height>61</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Modifier</string>
+          </property>
+         </widget>
         </widget>
        </widget>
       </item>

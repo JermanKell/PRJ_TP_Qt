@@ -30,7 +30,7 @@ void AjouterClientWindow::InitialiseGraphique() {
 }
 
 void AjouterClientWindow::RemplirListWidgetRessources(){
-    vector<Personnel> *vecPersonnel = controleur_personnel->GetListePersonnel();
+    vector<Personnel>* vecPersonnel = controleur_personnel->RetourListePersonnel();
      for(unsigned int uiBoucle = 0; uiBoucle < vecPersonnel->size(); uiBoucle++) {
         ui->listWidget_Ressources->addItem(vecPersonnel->at(uiBoucle).getNom());
         QListWidgetItem* item = ui->listWidget_Ressources->item(uiBoucle);
@@ -149,7 +149,7 @@ void AjouterClientWindow::accept() //SURCHARGE POUR EMPECHER LA FENETRE DE SE FE
             }
             int idNouveauClient = controleur_client->MaxIdClient();
 
-            vector<Personnel>* vecPersonnel = controleur_personnel->GetListePersonnel();
+            vector<Personnel>* vecPersonnel = controleur_personnel->RetourListePersonnel();
             for(unsigned int uiBoucleR=0; uiBoucleR < vecRessources.size(); uiBoucleR++)
             {
                 for(unsigned int uiBoucleP=0; uiBoucleP < vecPersonnel->size(); uiBoucleP++)

@@ -2,11 +2,10 @@
 #define CONTROLEUR_CLIENT_H
 
 #include "Modele/client.h"
-#include <qstring.h>
-#include <QVariant>
 #include <QSqlQuery>
 #include <QSqlTableModel>
 #include "controleur_BD.h"
+#include <map>
 
 class Controleur_Client
 {
@@ -22,8 +21,9 @@ public:
     bool AjouterRDVClient(int idClient, int idRessource);
     bool SupprimerRDVClient(int idClient);
     bool ModifierClient(Client & cl);
+
     bool SupprimerClient();
-    vector<Client>* GetListeClient();
+    map<int, Client*>* GetListeClient();
     Client* GetClient(int idClient);
     vector<int>* GetListeIdRessourcesClient(int idClient);
     int NbClient();

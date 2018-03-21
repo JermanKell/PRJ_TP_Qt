@@ -4,17 +4,22 @@ Controleur_Personnel::Controleur_Personnel()
 {
     query = QSqlQuery(*(Controller_BD::getInstance()->getBD()));
 
-    VString.push_back(QString("Banquier A"));
-    VString.push_back(QString("Banquier B"));
-    VString.push_back(QString("Assureur logement"));
-    VString.push_back(QString("Assureur voiture"));
-    VString.push_back(QString("Assureur vie"));
-    VString.push_back(QString("Divers"));
-    VString.push_back(QString("Informaticien"));
+    RecupMetier();
+
 }
 
 Controleur_Personnel::~Controleur_Personnel() {
 
+}
+
+void Controleur_Personnel::RecupMetier() {
+    VString.clear();
+
+    bool var = query.exec("SELECT Label FROM TType ");
+    if(!var)    qDebug() << query.lastError();
+    while (query.next()) {
+        VString.push_back(query.value(0).toString());
+    }
 }
 
 int Controleur_Personnel::TravailVersInt(QString metier) {
@@ -53,15 +58,13 @@ bool Controleur_Personnel::AjouterPersonnel(QString nom, QString prenom, QString
     var = PersonneExiste(pers);
 
     if(!var) {
-        cout << "Ajout du personnel en cours..." << endl;
+        qDebug() << "Ajout du personnel en cours..." << endl;
 
         query.prepare("INSERT INTO TRessource (Id, Nom, Prenom, IdType) " "VALUES (NULL, :nom, :prenom, :id)");
         query.bindValue(":nom", pers.getNom());
         query.bindValue(":prenom", pers.getPrenom());
         query.bindValue(":id", pers.getTypeMetier());
         var = query.exec();
-
-        if (var)    cout << "Le personnel a bien été ajouté !" << endl;
     }
 
     return var;
@@ -71,24 +74,46 @@ bool Controleur_Personnel::ModifierPersonnel() {
     bool var = false;
 
 
-    return var;
-}
-
-bool Controleur_Personnel::SupprimerPersonnel() {
-    bool var = false;
 
     return var;
 }
 
-vector<Personnel>* Controleur_Personnel::GetListePersonnel() {
-    if(!query.exec("SELECT * FROM TRessource")) {
-        qDebug() << query.lastError().text();
+bool Controleur_Personnel::SupprimerPersonnel(unsigned int idRow, unsigned int idMetier) {
+    bool var;
+    bool value;
+    unsigned int nbLigne = 0;
+    int id;
+
+    query.prepare("SELECT Id, Nom, Prenom, IdType FROM TRessource WHERE IdType = :idMet");
+    query.bindValue(":idMet", idMetier);
+
+    if ((var = query.exec())) {
+        while ((query.next()) && (nbLigne != idRow)) {
+            nbLigne++;
+        }
+        id = query.value(0).toInt();
+
+        query.prepare("DELETE FROM TRessource WHERE Id = :id ");
+        query.bindValue(":id", id);
+        value = query.exec();
     }
-    vector<Personnel>* vecPersonnel = new vector<Personnel>();
-    while (query.next()) {
-        Personnel personnel(query.value(1).toString(), query.value(2).toString(), query.value(3).toInt());
-        personnel.setId(query.value(0).toInt());
-        vecPersonnel->push_back(personnel);
+    return var&value;
+}
+
+QList<QString> Controleur_Personnel::getListe() {
+    return VString;
+}
+
+vector<Personnel>* Controleur_Personnel::RetourListePersonnel() {
+    vector<Personnel> *pers = new vector<Personnel>;
+
+    query.prepare("SELECT * FROM TRessource");
+    if (query.exec()) {
+        while (query.next()) {
+            Personnel personnel = Personnel(query.value(1).toString(), query.value(2).toString(), query.value(3).toInt());
+            personnel.setId(query.value(0).toInt());
+            pers->push_back(personnel);
+        }
     }
-    return vecPersonnel;
+    return pers;
 }

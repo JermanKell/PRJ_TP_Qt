@@ -4,7 +4,10 @@
 #include <QMainWindow>
 #include "controleur_client.h"
 #include "controleur_personnel.h"
-#include <QCloseEvent>
+#include <QTreeView>
+#include <QSqlQuery>
+#include <QStandardItemModel>
+
 
 namespace Ui {
     class MainWindow;
@@ -19,13 +22,14 @@ class MainWindow : public QMainWindow
         ~MainWindow();
 
     public slots:
-        void slotAjouterClient();
-        void slotAjouterPersonnel();
         void slotAPropos();
-        void slotQuit();
+        void slotAjouterClient();
         void slotModifierClient();
         void slotSupprimerClient();
         void slotMiseAJourTableView();
+        void slotAjouterPersonnel();
+        void slotModifierPersonnel();
+        void slotSupprimerPersonnel();
 
     private:
         Ui::MainWindow *ui;
@@ -35,7 +39,13 @@ class MainWindow : public QMainWindow
 
         void InitialiseGraphique();
         void InitialiseTableView();
-        void closeEvent (QCloseEvent *event);   //Appelé si window fermé avec onglet 'X'
+
+        void treeViewInit(QSqlQuery & query);
+        unsigned int RechercheMetier(QString metier);
+        void RefreshTreePers();
+        QList<QString> list;
+        QStandardItemModel * treeModel;
+
 
 };
 

@@ -44,7 +44,7 @@ void ModifierClientWindow::InitialiseGraphique() {
 }
 
 void ModifierClientWindow::RemplirListWidgetRessources(){
-    vector<Personnel> *vecPersonnel = controleur_personnel->GetListePersonnel();
+    vector<Personnel> *vecPersonnel = controleur_personnel->RetourListePersonnel();
     vector<int> *vecIdRessources = controleur_client->GetListeIdRessourcesClient(client->getId());
 
      for(unsigned int uiBoucle = 0; uiBoucle < vecPersonnel->size(); uiBoucle++) {
@@ -145,7 +145,7 @@ bool ModifierClientWindow::ControleData() {
     return bValide;
 }
 
-void ModifierClientWindow::accept() //SURCHARGE POUR EMPECHER LA FENETRE DE SE FERMER
+void ModifierClientWindow::accept() //SURCHARGE, par défault ferme la window
 {
     if (!ControleData()) {
         QMessageBox::warning(this, "Champs invalides", "Certains champs ne sont pas valides !");
@@ -167,7 +167,7 @@ void ModifierClientWindow::accept() //SURCHARGE POUR EMPECHER LA FENETRE DE SE F
         if(!controleur_client->SupprimerRDVClient(client->getId())) {
             bErreurSQL = true;
         }
-        vector<Personnel>* vecPersonnel = controleur_personnel->GetListePersonnel();
+        vector<Personnel>* vecPersonnel = controleur_personnel->RetourListePersonnel();
         for(unsigned int uiBoucleR=0; uiBoucleR < vecRessources.size(); uiBoucleR++) {
             for(unsigned int uiBoucleP=0; uiBoucleP < vecPersonnel->size(); uiBoucleP++){
                 if(QString::compare(vecPersonnel->at(uiBoucleP).getNom(), vecRessources.at(uiBoucleR), Qt::CaseSensitive) == 0) {

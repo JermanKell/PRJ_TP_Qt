@@ -97,11 +97,11 @@ bool Controleur_Client::SupprimerRDVClient(int idClient) {
     return true;
 }
 
-vector<Client>* Controleur_Client::GetListeClient() {
+map<int, Client*>* Controleur_Client::GetListeClient() {
     if(!query.exec("SELECT * FROM TClient")) {
         qDebug() << query.lastError().text();
     }
-    vector<Client>* vecClient = new vector<Client>();
+    map<int, Client*>* mapClient = new map<int, Client*>();
     while (query.next()) {
         vector<int> vecId;
         int idClient = query.value(0).toInt();
@@ -117,17 +117,18 @@ vector<Client>* Controleur_Client::GetListeClient() {
             vecId.push_back(queryRessources.value(2).toInt());
         }
 
-       Client client(query.value(1).toString(), query.value(2).toString(), query.value(3).toString(), query.value(4).toString(),
+       Client *client = new Client(
+                     query.value(1).toString(), query.value(2).toString(), query.value(3).toString(), query.value(4).toString(),
                      query.value(5).toInt(),
                      query.value(8).toString(),
                      query.value(9).toInt(),query.value(10).toInt(),
                      query.value(6).toString(),
                      query.value(7).toInt());
-       client.setId(query.value(0).toInt());
-       client.setIdRessources(vecId);
-        vecClient->push_back(client);
+       client->setId(query.value(0).toInt());
+       client->setIdRessources(vecId);
+       mapClient->insert(std::make_pair(client->getId(),client));
     }
-    return vecClient;
+    return mapClient;
 }
 
 Client* Controleur_Client::GetClient(int idClient) {

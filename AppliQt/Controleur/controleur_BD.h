@@ -38,7 +38,7 @@ public:
         return controllerDB;
     }
 
-    static QSqlDatabase * getBD() {
+    QSqlDatabase * getBD() {
         return db;
     }
 

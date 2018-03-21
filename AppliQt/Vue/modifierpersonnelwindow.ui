@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ModifierPersonnelWindow</class>
+ <widget class="QDialog" name="ModifierPersonnelWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>568</width>
+    <height>342</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Modifier un personnel</string>
+  </property>
+  <property name="layoutDirection">
+   <enum>Qt::LeftToRight</enum>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QLabel" name="lab_Nom">
+       <property name="text">
+        <string>Veuillez saisir votre nom :</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="edit_Nom">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="lab_Prenom">
+       <property name="text">
+        <string>Veuillez saisir votre prénom :</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="edit_Prenom"/>
+     </item>
+     <item>
+      <widget class="QLabel" name="lab_Sit">
+       <property name="text">
+        <string>Quel est votre situation professionnelle ?</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="edit_Sit"/>
+     </item>
+     <item>
+      <widget class="QLabel" name="lab_Id">
+       <property name="text">
+        <string>Identifiant ?</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="edit_Id"/>
+     </item>
+     <item>
+      <widget class="QLabel" name="lab_MdP">
+       <property name="text">
+        <string>Mot de passe ?</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="edit_MdP"/>
+     </item>
+     <item>
+      <widget class="QDialogButtonBox" name="QDialog_btn_ValiderModifPersonnel">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="standardButtons">
+        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>QDialog_btn_ValiderModifPersonnel</sender>
+   <signal>accepted()</signal>
+   <receiver>ModifierPersonnelWindow</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>QDialog_btn_ValiderModifPersonnel</sender>
+   <signal>rejected()</signal>
+   <receiver>ModifierPersonnelWindow</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

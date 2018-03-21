@@ -6,6 +6,7 @@
 #include <QSqlQuery>
 #include "controleur_BD.h"
 #include <QVariant>
+#include <QList>
 #include <vector>
 #include <stdio.h>
 
@@ -16,11 +17,10 @@ class Controleur_Personnel
 
 private:
     QSqlQuery query;
-    vector<QString> VString;
-    vector<QString>::iterator VSIterator;
+    QList<QString> VString;
+    QList<QString>::iterator VSIterator;
 
-    int TravailVersInt(QString metier);
-    QString IntVersTravail(int id);
+    void RecupMetier();
 
     inline bool PersonneExiste(Personnel per) {
         bool var;
@@ -30,10 +30,16 @@ private:
         query.bindValue(":prenom", per.getPrenom());
         var = query.exec();
 
-        while (query.next()) {
-            if (var)    cout << "Le personnel travaille déjà pour l'entreprise" << endl;
-            else    cout << "Le personnel n'a pas été trouvé" << endl;
+        if (query.next()) {
+            cout << "Le personnel travaille déjà pour l'entreprise" << endl;
+            var = true;
+
         }
+        else    {
+            cout << "Le personnel n'a pas ete trouve" << endl;
+            var = false;
+        }
+
         return var;
     }
 
@@ -41,10 +47,17 @@ public:
     Controleur_Personnel();
     ~Controleur_Personnel();
 
+    QList<QString> getListe();
+
+
+    int TravailVersInt(QString metier);
+    QString IntVersTravail(int id);
+
     bool AjouterPersonnel(QString nom, QString prenom, QString travail);
     bool ModifierPersonnel();
-    bool SupprimerPersonnel();
-    vector<Personnel>* GetListePersonnel();
+    bool SupprimerPersonnel(unsigned int idRow, unsigned int idMetier);
+
+    vector<Personnel>* RetourListePersonnel();
 };
 
 #endif // CONTROLLEUR_PERSONNEL_H

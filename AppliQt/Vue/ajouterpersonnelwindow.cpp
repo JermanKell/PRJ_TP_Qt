@@ -27,7 +27,7 @@ AjouterPersonnelWindow::~AjouterPersonnelWindow()
 
 void AjouterPersonnelWindow::slotAjouterPersonnel() {
     if (controleur_personnel->AjouterPersonnel(ui->edit_Nom->text(), ui->edit_Prenom->text(), ui->edit_Sit->currentText())) {
-        QMessageBox::information(this, "Ajout d'un personnel", "Le personnel a bien été ajouté");
+        QMessageBox::information(this, "Ajout d'un personnel", "Le personnel a bien ete ajoute");
         //this->close();
     }
     else QMessageBox::information(this, "Warning", "Une erreur est survenue lors de l'ajout du personnel !");

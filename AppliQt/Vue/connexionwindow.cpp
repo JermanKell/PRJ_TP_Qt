@@ -18,6 +18,7 @@ ConnexionWindow::ConnexionWindow(QWidget *parent) :
 ConnexionWindow::~ConnexionWindow()
 {
     delete ui;
+    Controller_BD::kill();
 }
 
 void ConnexionWindow::slotCheck(void) {
