@@ -1,10 +1,10 @@
-#ifndef CONTROLLEUR_PERSONNEL_H
-#define CONTROLLEUR_PERSONNEL_H
+#ifndef DBMANAGER_PERSONNEL_H
+#define DBMANAGER_PERSONNEL_H
 
 #include <qstring.h>
 #include "Modele/personnel.h"
 #include <QSqlQuery>
-#include "controleur_BD.h"
+#include "dbconnexion.h"
 #include <QVariant>
 #include <QList>
 #include <vector>
@@ -12,7 +12,7 @@
 
 using namespace std;
 
-class Controleur_Personnel
+class DBManager_Personnel
 {
 
 private:
@@ -27,12 +27,9 @@ private:
         var = query.exec();
 
         if (query.next()) {
-            cout << "Le personnel travaille déjà pour l'entreprise" << endl;
             var = true;
-
         }
         else    {
-            cout << "Le personnel n'a pas ete trouve" << endl;
             var = false;
         }
 
@@ -40,18 +37,19 @@ private:
     }
 
 public:
-    Controleur_Personnel();
-    ~Controleur_Personnel();
+    DBManager_Personnel();
+    ~DBManager_Personnel();
 
     QList<QString>* RecupMetier();
     int TravailVersInt(QString metier);
     QString IntVersTravail(int id);
 
-    bool AjouterPersonnel(QString nom, QString prenom, QString travail);
-    bool ModifierPersonnel();
-    bool SupprimerPersonnel(unsigned int idRow, unsigned int idMetier);
+    bool AjouterPersonnel(QString nom, QString prenom, QString travail, QString identifiant, QString mdp);
+    bool ModifierPersonnel(QString nom, QString prenom, QString nvmetier, QString ancienMetier, QString identifiant, QString mdp, int idRessource);
+    bool SupprimerPersonnel(unsigned int idRow, QString Metier);
 
     vector<Personnel>* RetourListePersonnel();
+    QList<QString>* RetournerPersonnel(QString nomMetier, int placeReq);
 };
 
-#endif // CONTROLLEUR_PERSONNEL_H
+#endif // DBMANAGER_PERSONNEL_H

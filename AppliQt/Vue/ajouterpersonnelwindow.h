@@ -2,7 +2,7 @@
 #define AJOUTERPERSONNELWINDOW_H
 
 #include <QDialog>
-#include "controleur_personnel.h"
+#include "dbmanager_personnel.h"
 #include <QMessageBox>
 
 namespace Ui {
@@ -14,15 +14,20 @@ class AjouterPersonnelWindow : public QDialog
     Q_OBJECT
 
     public:
-        explicit AjouterPersonnelWindow(Controleur_Personnel *controleur, QWidget *parent = 0);
+        explicit AjouterPersonnelWindow(DBManager_Personnel *dbmpersonnel, QWidget *parent = 0);
         ~AjouterPersonnelWindow();
 
     private slots:
-        void slotAjouterPersonnel();
+        void accept();
+        void on_edit_Sit_currentTextChanged(const QString &arg1);
 
-    private:
+private:
             Ui::AjouterPersonnelWindow *ui;
-            Controleur_Personnel *controleur_personnel;
+            DBManager_Personnel *dbm_personnel;
+            bool informaticien;
+
+            void InitialiseGraphique();
+            bool ControleData();
 };
 
 #endif // AJOUTERPERSONNELWINDOW_H

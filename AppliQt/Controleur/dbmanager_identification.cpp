@@ -1,19 +1,19 @@
-#include "checkconnexion.h"
+#include "dbmanager_identification.h"
 
 using namespace std;
 
-CheckConnexion::CheckConnexion() {
+DBManager_Identification::DBManager_Identification() {
 
 }
 
-CheckConnexion::~CheckConnexion() {
+DBManager_Identification::~DBManager_Identification() {
 
 }
 
-bool CheckConnexion::CheckCoUser(QString Id, QString mdp) {
+bool DBManager_Identification::VerifierConnexion(QString Id, QString mdp) {
     bool bresult = false;
 
-    QSqlQuery query = QSqlQuery(*(Controller_BD::getInstance()->getBD()));
+    QSqlQuery query = QSqlQuery(*(DBConnexion::getInstance()->getBD()));
 
     query.prepare("SELECT Login, MdP FROM TCompte WHERE Login LIKE :Id AND MdP LIKE :mdp");
     query.bindValue(":Id", Id);

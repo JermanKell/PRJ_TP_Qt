@@ -1,20 +1,20 @@
-#ifndef CONTROLEUR_CLIENT_H
-#define CONTROLEUR_CLIENT_H
+#ifndef DBMANAGER_CLIENT_H
+#define DBMANAGER_CLIENT_H
 
 #include "Modele/client.h"
 #include <QSqlQuery>
 #include <QSqlTableModel>
-#include "controleur_BD.h"
+#include "dbconnexion.h"
 #include <map>
 
-class Controleur_Client
+class DBManager_Client
 {
 private:
     QSqlQuery query;
 
 public:
-    Controleur_Client();
-    ~Controleur_Client();
+    DBManager_Client();
+    ~DBManager_Client();
 
     bool ClientExiste(Client * cl);
     bool AjouterClient(Client * cl);
@@ -34,4 +34,4 @@ public:
     QString DateMaximum();
 };
 
-#endif // CONTROLEUR_CLIENT_H
+#endif // DBMANAGER_CLIENT_H

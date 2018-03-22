@@ -8,6 +8,8 @@ ConnexionWindow::ConnexionWindow(QWidget *parent) :
     ui(new Ui::ConnexionWindow)
 {
     ui->setupUi(this);
+    db_identification = new DBManager_Identification();
+
     QObject::connect(ui->pushButton_annuler, SIGNAL(clicked()), this, SLOT(close()));
     QObject::connect(ui->pushButton_connexion, SIGNAL(clicked()), this, SLOT(slotCheck()));
 
@@ -18,13 +20,14 @@ ConnexionWindow::ConnexionWindow(QWidget *parent) :
 ConnexionWindow::~ConnexionWindow()
 {
     delete ui;
-    Controller_BD::kill();
+    delete db_identification;
+    DBConnexion::kill();
 }
 
 void ConnexionWindow::slotCheck(void) {
     bool res = false;
 
-    res = CheckConnexion::CheckCoUser(ui->lineEdit_Id->text(), ui->lineEdit_Mdp->text());
+    res = db_identification->VerifierConnexion(ui->lineEdit_Id->text(), ui->lineEdit_Mdp->text());
 
     if (res)
         accept();

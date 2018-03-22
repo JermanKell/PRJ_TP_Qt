@@ -2,13 +2,13 @@
 #include "ui_modifierclientwindow.h"
 #include <QMessageBox>
 
-ModifierClientWindow::ModifierClientWindow(Client *c, Controleur_Client *controleur_c, Controleur_Personnel *controleur_p, QWidget *parent) :
+ModifierClientWindow::ModifierClientWindow(Client *c, DBManager_Client *dbmclient, DBManager_Personnel *dbmpersonnel, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ModifierClientWindow)
 {
     ui->setupUi(this);
-    controleur_client = controleur_c;
-    controleur_personnel = controleur_p;
+    dbm_client = dbmclient;
+    dbm_personnel = dbmpersonnel;
     client = c;
 
     InitialiseGraphique();
@@ -44,8 +44,8 @@ void ModifierClientWindow::InitialiseGraphique() {
 }
 
 void ModifierClientWindow::RemplirListWidgetRessources(){
-    vector<Personnel> *vecPersonnel = controleur_personnel->RetourListePersonnel();
-    vector<int> *vecIdRessources = controleur_client->GetListeIdRessourcesClient(client->getId());
+    vector<Personnel> *vecPersonnel = dbm_personnel->RetourListePersonnel();
+    vector<int> *vecIdRessources = dbm_client->GetListeIdRessourcesClient(client->getId());
 
      for(unsigned int uiBoucle = 0; uiBoucle < vecPersonnel->size(); uiBoucle++) {
         ui->listWidget_Ressources->addItem(vecPersonnel->at(uiBoucle).getNom());
@@ -159,19 +159,19 @@ void ModifierClientWindow::accept() //SURCHARGE, par défault ferme la window
             }
         }
         MajClient();
-        QSqlDatabase *db = Controller_BD::getInstance()->getBD();
+        QSqlDatabase *db = DBConnexion::getInstance()->getBD();
         db->transaction();
-        if(!controleur_client->ModifierClient(client)) {
+        if(!dbm_client->ModifierClient(client)) {
             bErreurSQL = true;
         }
-        if(!controleur_client->SupprimerRDVClient(client->getId())) {
+        if(!dbm_client->SupprimerRDVClient(client->getId())) {
             bErreurSQL = true;
         }
-        vector<Personnel>* vecPersonnel = controleur_personnel->RetourListePersonnel();
+        vector<Personnel>* vecPersonnel = dbm_personnel->RetourListePersonnel();
         for(unsigned int uiBoucleR=0; uiBoucleR < vecRessources.size(); uiBoucleR++) {
             for(unsigned int uiBoucleP=0; uiBoucleP < vecPersonnel->size(); uiBoucleP++){
                 if(QString::compare(vecPersonnel->at(uiBoucleP).getNom(), vecRessources.at(uiBoucleR), Qt::CaseSensitive) == 0) {
-                    if(!controleur_client->AjouterRDVClient(client->getId(), vecPersonnel->at(uiBoucleP).getId())) {
+                    if(!dbm_client->AjouterRDVClient(client->getId(), vecPersonnel->at(uiBoucleP).getId())) {
                         bErreurSQL = true;
                     }
                 }

@@ -1,11 +1,11 @@
-#include "controleur_client.h"
+#include "dbmanager_client.h"
 
-Controleur_Client::Controleur_Client()
+DBManager_Client::DBManager_Client()
 {
-    query = QSqlQuery(*(Controller_BD::getInstance()->getBD()));
+    query = QSqlQuery(*(DBConnexion::getInstance()->getBD()));
 }
 
-bool Controleur_Client::ClientExiste(Client * cl) {
+bool DBManager_Client::ClientExiste(Client * cl) {
     bool bresult = false;;
 
     query.prepare("SELECT Nom, Prenom FROM TClient WHERE Nom LIKE :nom AND Prenom LIKE :prenom");
@@ -22,7 +22,7 @@ bool Controleur_Client::ClientExiste(Client * cl) {
     return bresult;
 }
 
-bool Controleur_Client::AjouterClient(Client * cl) {
+bool DBManager_Client::AjouterClient(Client * cl) {
     query.prepare("INSERT INTO TClient (Nom, Prenom, Adresse, Ville, CP, Commentaire, Tel, DateRdv, DureeRdv, Priorite) "
                   "VALUES (:nom, :prenom, :adresse, :ville, :cp, :comm, :tel, :date, :duree, :prio)");
     query.bindValue(":nom", cl->getNom());
@@ -42,7 +42,7 @@ bool Controleur_Client::AjouterClient(Client * cl) {
     return true;
 }
 
-bool Controleur_Client::ModifierClient(Client * cl) {
+bool DBManager_Client::ModifierClient(Client * cl) {
     query.prepare("UPDATE TClient SET nom = :nom, "
                    "prenom = :prenom, "
                    "adresse = :adresse, "
@@ -73,7 +73,7 @@ bool Controleur_Client::ModifierClient(Client * cl) {
     return true;
 }
 
-bool Controleur_Client::AjouterRDVClient(int idClient, int idRessource) {
+bool DBManager_Client::AjouterRDVClient(int idClient, int idRessource) {
     query.prepare("INSERT INTO TRdv (IdClient, IdRessource) "
                   "VALUES (:idC, :idR)");
     query.bindValue(":idC", idClient);
@@ -86,7 +86,7 @@ bool Controleur_Client::AjouterRDVClient(int idClient, int idRessource) {
     return true;
 }
 
-bool Controleur_Client::SupprimerRDVClient(int idClient) {
+bool DBManager_Client::SupprimerRDVClient(int idClient) {
     query.prepare("DELETE FROM TRdv WHERE IdClient = :idC");
     query.bindValue(":idC", idClient);
 
@@ -97,7 +97,7 @@ bool Controleur_Client::SupprimerRDVClient(int idClient) {
     return true;
 }
 
-map<int, Client*>* Controleur_Client::GetListeClient() {
+map<int, Client*>* DBManager_Client::GetListeClient() {
     if(!query.exec("SELECT * FROM TClient")) {
         qDebug() << query.lastError().text();
     }
@@ -106,7 +106,7 @@ map<int, Client*>* Controleur_Client::GetListeClient() {
         vector<int> vecId;
         int idClient = query.value(0).toInt();
 
-        QSqlQuery queryRessources = QSqlQuery(*(Controller_BD::getInstance()->getBD()));
+        QSqlQuery queryRessources = QSqlQuery(*(DBConnexion::getInstance()->getBD()));
         queryRessources.prepare("SELECT * FROM TRdv WHERE IdClient = :IdClient");
         queryRessources.bindValue(":IdClient", idClient);
         if(!queryRessources.exec()) {
@@ -131,7 +131,7 @@ map<int, Client*>* Controleur_Client::GetListeClient() {
     return mapClient;
 }
 
-Client* Controleur_Client::GetClient(int idClient) {
+Client* DBManager_Client::GetClient(int idClient) {
     query.prepare("SELECT * FROM TClient WHERE Id = :id");
     query.bindValue(":id", idClient);
 
@@ -151,7 +151,7 @@ Client* Controleur_Client::GetClient(int idClient) {
     return nullptr;
 }
 
-Client* Controleur_Client::GetClientFromName(QString nom, QString prenom) {
+Client* DBManager_Client::GetClientFromName(QString nom, QString prenom) {
     query.prepare("SELECT * FROM TClient WHERE nom = :nom AND prenom = :prenom");
     query.bindValue(":nom", nom);
     query.bindValue(":prenom", prenom);
@@ -172,7 +172,7 @@ Client* Controleur_Client::GetClientFromName(QString nom, QString prenom) {
     return nullptr;
 }
 
-vector<int>* Controleur_Client::GetListeIdRessourcesClient(int idClient) {
+vector<int>* DBManager_Client::GetListeIdRessourcesClient(int idClient) {
     query.prepare("SELECT IdRessource FROM TRdv WHERE IdClient = :idC");
     query.bindValue(":idC", idClient);
 
@@ -186,7 +186,7 @@ vector<int>* Controleur_Client::GetListeIdRessourcesClient(int idClient) {
     return vecIdRessources;
 }
 
-int Controleur_Client::NbClient() {
+int DBManager_Client::NbClient() {
     if(!query.exec("SELECT COUNT(*) FROM TClient")) {
         qDebug() << query.lastError().text();
     }
@@ -196,7 +196,7 @@ int Controleur_Client::NbClient() {
     return 0;
 }
 
-int Controleur_Client::MaxIdClient() {
+int DBManager_Client::MaxIdClient() {
     if(!query.exec("SELECT MAX(Id) FROM TClient")) {
         qDebug() << query.lastError().text();
     }
@@ -206,8 +206,8 @@ int Controleur_Client::MaxIdClient() {
     return 0;
 }
 
-QSqlTableModel* Controleur_Client::RechercheClient(int id, QString nom, QString prenom, QString dateDebut, QString dateFin) {
-      QSqlTableModel * model = new QSqlTableModel(NULL, *Controller_BD::getInstance()->getBD());
+QSqlTableModel* DBManager_Client::RechercheClient(int id, QString nom, QString prenom, QString dateDebut, QString dateFin) {
+      QSqlTableModel * model = new QSqlTableModel(NULL, *DBConnexion::getInstance()->getBD());
       model->setTable("TClient");
       model->select();
       if(nom.count() != 0) {
@@ -224,7 +224,7 @@ QSqlTableModel* Controleur_Client::RechercheClient(int id, QString nom, QString 
       return model;
 }
 
-QString Controleur_Client::DateMinimum() {
+QString DBManager_Client::DateMinimum() {
     if(!query.exec("SELECT MIN(DateRdv) FROM TClient")) {
         qDebug() << query.lastError().text();
     }
@@ -232,7 +232,7 @@ QString Controleur_Client::DateMinimum() {
     return query.value(0).toString();
 }
 
-QString Controleur_Client::DateMaximum() {
+QString DBManager_Client::DateMaximum() {
     if(!query.exec("SELECT MAX(DateRdv) FROM TClient")) {
         qDebug() << query.lastError().text();
     }
@@ -240,7 +240,7 @@ QString Controleur_Client::DateMaximum() {
     return query.value(0).toString();
 }
 
-Controleur_Client::~Controleur_Client() {
+DBManager_Client::~DBManager_Client() {
 
 }
 

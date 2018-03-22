@@ -2,8 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "controleur_client.h"
-#include "controleur_personnel.h"
+#include "dbmanager_client.h"
+#include "dbmanager_personnel.h"
 #include <QTreeView>
 #include <QStandardItemModel>
 
@@ -34,8 +34,8 @@ class MainWindow : public QMainWindow
         Ui::MainWindow *ui;
         QSqlTableModel *tableModel;
         QStandardItemModel *treeModel;
-        Controleur_Client *controleur_client;
-        Controleur_Personnel *controleur_personnel;
+        DBManager_Client *dbm_client;
+        DBManager_Personnel *dbm_personnel;
 
         void InitialiseGraphique();
         void InitialiseTableView();

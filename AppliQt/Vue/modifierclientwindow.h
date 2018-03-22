@@ -2,8 +2,8 @@
 #define MODIFIERCLIENTWINDOW_H
 
 #include <QDialog>
-#include "controleur_client.h"
-#include "controleur_personnel.h"
+#include "dbmanager_client.h"
+#include "dbmanager_personnel.h"
 
 namespace Ui {
     class ModifierClientWindow;
@@ -14,7 +14,7 @@ class ModifierClientWindow : public QDialog
     Q_OBJECT
 
     public:
-        explicit ModifierClientWindow(Client *c, Controleur_Client *controleur_c, Controleur_Personnel *controleur_p, QWidget *parent = 0);
+        explicit ModifierClientWindow(Client *c, DBManager_Client *dbmclient, DBManager_Personnel *dbmpersonnel, QWidget *parent = 0);
         ~ModifierClientWindow();
 
     private slots:
@@ -22,8 +22,8 @@ class ModifierClientWindow : public QDialog
 
     private:
         Ui::ModifierClientWindow *ui;
-        Controleur_Client *controleur_client;
-        Controleur_Personnel *controleur_personnel;
+        DBManager_Client *dbm_client;
+        DBManager_Personnel *dbm_personnel;
         Client *client;
 
 

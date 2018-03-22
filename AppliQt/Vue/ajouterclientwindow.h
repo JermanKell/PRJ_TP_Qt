@@ -2,8 +2,8 @@
 #define AJOUTERCLIENTWINDOW_H
 
 #include <QDialog>
-#include "controleur_client.h"
-#include "controleur_personnel.h"
+#include "dbmanager_client.h"
+#include "dbmanager_personnel.h"
 
 namespace Ui {
     class AjouterClientWindow;
@@ -14,7 +14,7 @@ class AjouterClientWindow : public QDialog
     Q_OBJECT
 
     public:
-        explicit AjouterClientWindow(Controleur_Client *controleur_c, Controleur_Personnel *controleur_p, QWidget *parent = 0);
+        explicit AjouterClientWindow(DBManager_Client *dbmclient, DBManager_Personnel *dbmpersonnel, QWidget *parent = 0);
         ~AjouterClientWindow();
 
     private slots:
@@ -22,8 +22,8 @@ class AjouterClientWindow : public QDialog
 
     private:
         Ui::AjouterClientWindow *ui;
-        Controleur_Client *controleur_client;
-        Controleur_Personnel *controleur_personnel;
+        DBManager_Client *dbm_client;
+        DBManager_Personnel *dbm_personnel;
 
         void InitialiseGraphique();
         void RemplirListWidgetRessources();

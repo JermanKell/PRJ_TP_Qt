@@ -54,6 +54,26 @@
       <widget class="QComboBox" name="edit_Sit"/>
      </item>
      <item>
+      <widget class="QLabel" name="lab_Id">
+       <property name="text">
+        <string>Id ?</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="edit_Id"/>
+     </item>
+     <item>
+      <widget class="QLabel" name="lab_MdP">
+       <property name="text">
+        <string>MdP ?</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="edit_MdP"/>
+     </item>
+     <item>
       <widget class="QDialogButtonBox" name="QDialog_btn_ValiderAjoutPersonnel">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>

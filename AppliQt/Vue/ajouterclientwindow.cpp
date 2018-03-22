@@ -2,13 +2,13 @@
 #include "ui_ajouterclientwindow.h"
 #include <QMessageBox>
 
-AjouterClientWindow::AjouterClientWindow(Controleur_Client *controleur_c, Controleur_Personnel *controleur_p, QWidget *parent) :
+AjouterClientWindow::AjouterClientWindow(DBManager_Client *dbmclient, DBManager_Personnel *dbmpersonnel, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AjouterClientWindow)
 {
     ui->setupUi(this);
-    controleur_client = controleur_c;
-    controleur_personnel = controleur_p;
+    dbm_client = dbmclient;
+    dbm_personnel = dbmpersonnel;
 
     InitialiseGraphique();
 }
@@ -30,7 +30,7 @@ void AjouterClientWindow::InitialiseGraphique() {
 }
 
 void AjouterClientWindow::RemplirListWidgetRessources(){
-    vector<Personnel>* vecPersonnel = controleur_personnel->RetourListePersonnel();
+    vector<Personnel>* vecPersonnel = dbm_personnel->RetourListePersonnel();
      for(unsigned int uiBoucle = 0; uiBoucle < vecPersonnel->size(); uiBoucle++) {
         ui->listWidget_Ressources->addItem(vecPersonnel->at(uiBoucle).getNom());
         QListWidgetItem* item = ui->listWidget_Ressources->item(uiBoucle);
@@ -126,7 +126,7 @@ void AjouterClientWindow::accept() //SURCHARGE POUR EMPECHER LA FENETRE DE SE FE
                       ui->lineEdit_Ville->text(), ui->lineEdit_CodePostal->text().toInt(),
                       ui->dateEdit_dateRDV->text(), ui->lineEdit_Duree->text().toInt(), ui->lineEdit_Priorite->text().toInt(),
                       ui->textEdit_Commentaires->toPlainText(), ui->lineEdit_Telephone->text().toInt());
-        if(controleur_client->ClientExiste(&client))
+        if(dbm_client->ClientExiste(&client))
         {
             QMessageBox::critical(this, "Erreur", "Un client avec le même nom et prénom existe déja !");
         }
@@ -141,13 +141,13 @@ void AjouterClientWindow::accept() //SURCHARGE POUR EMPECHER LA FENETRE DE SE FE
                     vecRessources.push_back(ui->listWidget_Ressources->item(iBoucle)->text());
                 }
             }
-            QSqlDatabase *db = Controller_BD::getInstance()->getBD();
+            QSqlDatabase *db = DBConnexion::getInstance()->getBD();
             db->transaction();
-            if(!controleur_client->AjouterClient(&client))
+            if(!dbm_client->AjouterClient(&client))
             {
                 bErreurSQL = true;
             }
-            Client *clientInsere = controleur_client->GetClientFromName(ui->lineEdit_Nom->text(), ui->lineEdit_Prenom->text());
+            Client *clientInsere = dbm_client->GetClientFromName(ui->lineEdit_Nom->text(), ui->lineEdit_Prenom->text());
             if(clientInsere == nullptr) {
                 bErreurSQL = true;
             }
@@ -155,14 +155,14 @@ void AjouterClientWindow::accept() //SURCHARGE POUR EMPECHER LA FENETRE DE SE FE
                 int idNouveauClient = clientInsere->getId();
                 delete clientInsere;
 
-                vector<Personnel>* vecPersonnel = controleur_personnel->RetourListePersonnel();
+                vector<Personnel>* vecPersonnel = dbm_personnel->RetourListePersonnel();
                 for(unsigned int uiBoucleR=0; uiBoucleR < vecRessources.size(); uiBoucleR++)
                 {
                     for(unsigned int uiBoucleP=0; uiBoucleP < vecPersonnel->size(); uiBoucleP++)
                     {
                         if(QString::compare(vecPersonnel->at(uiBoucleP).getNom(), vecRessources.at(uiBoucleR), Qt::CaseSensitive) == 0)
                         {
-                            if(!controleur_client->AjouterRDVClient(idNouveauClient, vecPersonnel->at(uiBoucleP).getId()))
+                            if(!dbm_client->AjouterRDVClient(idNouveauClient, vecPersonnel->at(uiBoucleP).getId()))
                             {
                                 bErreurSQL = true;
                             }

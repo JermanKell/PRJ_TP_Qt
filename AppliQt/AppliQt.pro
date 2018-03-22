@@ -41,12 +41,13 @@ SOURCES += \
     Vue/ajouterclientwindow.cpp \
     Vue/modifierclientwindow.cpp \
     Vue/ajouterpersonnelwindow.cpp \
+    Vue/modifierpersonnelwindow.cpp \
     Vue/aproposwindow.cpp \
     #Controleur
-    Controleur/checkconnexion.cpp \
-    Controleur/controleur_personnel.cpp \
-    Controleur/controleur_BD.cpp \
-    Controleur/controleur_client.cpp
+    Controleur/dbconnexion.cpp \
+    Controleur/dbmanager_identification.cpp \
+    Controleur/dbmanager_client.cpp \
+    Controleur/dbmanager_personnel.cpp
 
 HEADERS += \
     c_init_bd.h \
@@ -59,12 +60,13 @@ HEADERS += \
     Vue/ajouterclientwindow.h \
     Vue/modifierclientwindow.h \
     Vue/ajouterpersonnelwindow.h \
+    Vue/modifierpersonnelwindow.h \
     Vue/aproposwindow.h \
     #Controleur
-    Controleur/checkconnexion.h \
-    Controleur/controleur_personnel.h \
-    Controleur/controleur_BD.h \
-    Controleur/controleur_client.h
+    Controleur/dbconnexion.h \
+    Controleur/dbmanager_identification.h \
+    Controleur/dbmanager_client.h \
+    Controleur/dbmanager_personnel.h
 
 FORMS += \
     #Vue
@@ -73,4 +75,5 @@ FORMS += \
     Vue/ajouterclientwindow.ui \
     Vue/modifierclientwindow.ui \
     Vue/ajouterpersonnelwindow.ui \
+    Vue/modifierpersonnelwindow.ui \
     Vue/aproposwindow.ui

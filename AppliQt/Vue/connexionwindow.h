@@ -3,7 +3,7 @@
 
 #include <QDialog>
 #include <QMessageBox>
-#include "checkconnexion.h"
+#include "dbmanager_identification.h"
 
 namespace Ui {
     class ConnexionWindow;
@@ -24,6 +24,7 @@ public slots:
 
     private:
         Ui::ConnexionWindow *ui;
+        DBManager_Identification *db_identification;
 
         void InitialiseGraphique();
 };

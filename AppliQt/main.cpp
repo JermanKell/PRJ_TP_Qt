@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "connexionwindow.h"
-#include "checkconnexion.h"
+#include "dbmanager_identification.h"
 #include "c_init_bd.h"
 #include <QApplication>
 #include <QFile>

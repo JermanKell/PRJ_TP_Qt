@@ -1,5 +1,5 @@
-#ifndef CONTOLLER_H
-#define CONTOLLER_H
+#ifndef DBCONNEXION_H
+#define DBCONNEXION_H
 
 #include "c_init_bd.h"
 #include <stdio.h>
@@ -12,18 +12,18 @@
 
 using namespace std;
 
-class Controller_BD {
+class DBConnexion {
 private:
-    static Controller_BD * controllerDB;
+    static DBConnexion * dbConnexion;
     static QSqlDatabase * db;
 
-    Controller_BD();
-    ~Controller_BD();
+    DBConnexion();
+    ~DBConnexion();
 
 public:
-    static Controller_BD * getInstance() {
-        if(controllerDB == nullptr) {
-            controllerDB = new Controller_BD();
+    static DBConnexion * getInstance() {
+        if(dbConnexion == nullptr) {
+            dbConnexion = new DBConnexion();
 
             if (!QFile::exists("base_tmp.sqli"))
                 qDebug() << "Fichier non trouvé !";
@@ -35,7 +35,7 @@ public:
                 qDebug() << db->lastError().text();
             }
         }
-        return controllerDB;
+        return dbConnexion;
     }
 
     QSqlDatabase * getBD() {
@@ -43,16 +43,16 @@ public:
     }
 
     static void kill() {
-        if (controllerDB != nullptr)
+        if (dbConnexion != nullptr)
         {
             db->close();
             delete db;
             db = nullptr;
 
-            delete controllerDB;
-            controllerDB = nullptr;
+            delete dbConnexion;
+            dbConnexion = nullptr;
         }
     }
 };
 
-#endif // CONTOLLER_H
+#endif // DBCONNEXION_H
