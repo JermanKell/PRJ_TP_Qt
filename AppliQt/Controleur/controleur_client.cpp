@@ -5,12 +5,12 @@ Controleur_Client::Controleur_Client()
     query = QSqlQuery(*(Controller_BD::getInstance()->getBD()));
 }
 
-bool Controleur_Client::ClientExiste(Client & cl) {
+bool Controleur_Client::ClientExiste(Client * cl) {
     bool bresult = false;;
 
     query.prepare("SELECT Nom, Prenom FROM TClient WHERE Nom LIKE :nom AND Prenom LIKE :prenom");
-    query.bindValue(":nom", cl.getNom());
-    query.bindValue(":prenom", cl.getPrenom());
+    query.bindValue(":nom", cl->getNom());
+    query.bindValue(":prenom", cl->getPrenom());
 
     if(!query.exec()) {
         qDebug() << query.lastError();
@@ -22,19 +22,19 @@ bool Controleur_Client::ClientExiste(Client & cl) {
     return bresult;
 }
 
-bool Controleur_Client::AjouterClient(Client & cl) {
+bool Controleur_Client::AjouterClient(Client * cl) {
     query.prepare("INSERT INTO TClient (Nom, Prenom, Adresse, Ville, CP, Commentaire, Tel, DateRdv, DureeRdv, Priorite) "
                   "VALUES (:nom, :prenom, :adresse, :ville, :cp, :comm, :tel, :date, :duree, :prio)");
-    query.bindValue(":nom", cl.getNom());
-    query.bindValue(":prenom", cl.getPrenom());
-    query.bindValue(":adresse", cl.getAdresse());
-    query.bindValue(":ville", cl.getVille());
-    query.bindValue(":cp", cl.getCP());
-    query.bindValue(":comm", cl.getCommentaires());
-    query.bindValue(":tel", cl.getTelephone());
-    query.bindValue(":date", cl.getDateRDV());
-    query.bindValue(":duree", cl.getDureeRDV());
-    query.bindValue(":prio", cl.getPriorite());
+    query.bindValue(":nom", cl->getNom());
+    query.bindValue(":prenom", cl->getPrenom());
+    query.bindValue(":adresse", cl->getAdresse());
+    query.bindValue(":ville", cl->getVille());
+    query.bindValue(":cp", cl->getCP());
+    query.bindValue(":comm", cl->getCommentaires());
+    query.bindValue(":tel", cl->getTelephone());
+    query.bindValue(":date", cl->getDateRDV());
+    query.bindValue(":duree", cl->getDureeRDV());
+    query.bindValue(":prio", cl->getPriorite());
     if(!query.exec()) {
         qDebug() << query.lastError();
         return false;
@@ -42,7 +42,7 @@ bool Controleur_Client::AjouterClient(Client & cl) {
     return true;
 }
 
-bool Controleur_Client::ModifierClient(Client & cl) {
+bool Controleur_Client::ModifierClient(Client * cl) {
     query.prepare("UPDATE TClient SET nom = :nom, "
                    "prenom = :prenom, "
                    "adresse = :adresse, "
@@ -54,17 +54,17 @@ bool Controleur_Client::ModifierClient(Client & cl) {
                    "dureeRdv = :duree,"
                    "priorite = :priorite "
                    "WHERE id = :id");
-    query.bindValue(":nom", cl.getNom());
-    query.bindValue(":prenom", cl.getPrenom());
-    query.bindValue(":adresse", cl.getAdresse());
-    query.bindValue(":ville", cl.getVille());
-    query.bindValue(":cp", cl.getCP());
-    query.bindValue(":commentaires", cl.getCommentaires());
-    query.bindValue(":tel", cl.getTelephone());
-    query.bindValue(":date", cl.getDateRDV());
-    query.bindValue(":duree", cl.getDureeRDV());
-    query.bindValue(":priorite", cl.getPriorite());
-    query.bindValue(":id", cl.getId());
+    query.bindValue(":nom", cl->getNom());
+    query.bindValue(":prenom", cl->getPrenom());
+    query.bindValue(":adresse", cl->getAdresse());
+    query.bindValue(":ville", cl->getVille());
+    query.bindValue(":cp", cl->getCP());
+    query.bindValue(":commentaires", cl->getCommentaires());
+    query.bindValue(":tel", cl->getTelephone());
+    query.bindValue(":date", cl->getDateRDV());
+    query.bindValue(":duree", cl->getDureeRDV());
+    query.bindValue(":priorite", cl->getPriorite());
+    query.bindValue(":id", cl->getId());
     if(!query.exec()) {
 
         qDebug() << query.lastError();
@@ -134,6 +134,27 @@ map<int, Client*>* Controleur_Client::GetListeClient() {
 Client* Controleur_Client::GetClient(int idClient) {
     query.prepare("SELECT * FROM TClient WHERE Id = :id");
     query.bindValue(":id", idClient);
+
+    if(!query.exec()) {
+        qDebug() << query.lastError();
+    }
+    if (query.next()) {
+        Client *client = new Client(query.value(1).toString(), query.value(2).toString(), query.value(3).toString(), query.value(4).toString(),
+                                    query.value(5).toInt(),
+                                    query.value(8).toString(),
+                                    query.value(9).toInt(),query.value(10).toInt(),
+                                    query.value(6).toString(),
+                                    query.value(7).toInt());
+       client->setId(query.value(0).toInt());
+       return client;
+    }
+    return nullptr;
+}
+
+Client* Controleur_Client::GetClientFromName(QString nom, QString prenom) {
+    query.prepare("SELECT * FROM TClient WHERE nom = :nom AND prenom = :prenom");
+    query.bindValue(":nom", nom);
+    query.bindValue(":prenom", prenom);
 
     if(!query.exec()) {
         qDebug() << query.lastError();

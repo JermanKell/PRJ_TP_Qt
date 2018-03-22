@@ -18,7 +18,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->statusBar->showMessage("Connecté");
     InitialiseGraphique();
-
     //Evenements MenuBar
     QObject::connect(ui->actionQuitter, SIGNAL(triggered()), this, SLOT(close()));
     QObject::connect(ui->actionClient, SIGNAL(triggered()), this, SLOT(slotAjouterClient()));
@@ -41,16 +40,12 @@ MainWindow::MainWindow(QWidget *parent) :
     // Evenement TreeView
     QObject::connect(ui->PersModif, SIGNAL(clicked()), this, SLOT(slotModifierPersonnel()));
     QObject::connect(ui->PersSup, SIGNAL(clicked()), this, SLOT(slotSupprimerPersonnel()));
-
-    // Traitement et initialisation du treeView
-    QSqlQuery * query = new QSqlQuery(*Controller_BD::getInstance()->getBD());
-    treeViewInit(*query);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete model;
+    delete tableModel;
     delete treeModel;
     delete controleur_client;
     delete controleur_personnel;
@@ -62,6 +57,7 @@ void MainWindow::InitialiseGraphique() {
     ui->dateEditMini->setDate(QDate::fromString(controleur_client->DateMinimum(), "yyyy-MM-dd"));
     ui->dateEditMax->setDate(QDate::fromString(controleur_client->DateMaximum(), "yyyy-MM-dd"));
     InitialiseTableView();
+    InitialiseTreeView();
 
     QFont font;
     font.setCapitalization(QFont::Capitalize);
@@ -70,7 +66,7 @@ void MainWindow::InitialiseGraphique() {
 }
 
 void MainWindow::InitialiseTableView() {
-    model = nullptr;
+    tableModel = nullptr;
     slotMiseAJourTableView();
     ui->tableViewClient->hideColumn(3);
     ui->tableViewClient->hideColumn(4);
@@ -79,6 +75,8 @@ void MainWindow::InitialiseTableView() {
     ui->tableViewClient->hideColumn(7);
     ui->tableViewClient->hideColumn(9);
     ui->tableViewClient->hideColumn(10);
+    ui->tableViewClient->horizontalHeader()->setStretchLastSection(true);
+    ui->tableViewClient->verticalHeader()->setVisible(false);
 }
 
 void MainWindow::slotAjouterClient() {
@@ -98,7 +96,7 @@ void MainWindow::slotAjouterPersonnel() {
     AjouterPersonnelWindow APWindow(controleur_personnel);
     if(APWindow.exec()==QDialog::Accepted)
     {
-        RefreshTreePers();
+        MiseAJourTeeView();
         ui->statusBar->showMessage("Ajout personnel validé");
     }
     else
@@ -119,7 +117,7 @@ void MainWindow::slotModifierClient() {
     }
     else
     {
-       Client *client = controleur_client->GetClient(model->index(ui->tableViewClient->currentIndex().row(), 0).data().toInt());
+       Client *client = controleur_client->GetClient(tableModel->index(ui->tableViewClient->currentIndex().row(), 0).data().toInt());
        ModifierClientWindow MCWindow(client, controleur_client, controleur_personnel);
         if(MCWindow.exec()==QDialog::Accepted)
         {
@@ -146,11 +144,11 @@ void MainWindow::slotSupprimerClient() {
             bool bErreurSQL = false;
             QSqlDatabase *db = Controller_BD::getInstance()->getBD();
             db->transaction();
-            if (!controleur_client->SupprimerRDVClient(model->index(ui->tableViewClient->currentIndex().row(), 0).data().toInt())) {
+            if (!controleur_client->SupprimerRDVClient(tableModel->index(ui->tableViewClient->currentIndex().row(), 0).data().toInt())) {
                 bErreurSQL = true;
             }
             else {
-                if(!model->removeRow(ui->tableViewClient->currentIndex().row())) {
+                if(!tableModel->removeRow(ui->tableViewClient->currentIndex().row())) {
                     bErreurSQL = true;
                 }
             }
@@ -167,38 +165,17 @@ void MainWindow::slotSupprimerClient() {
         }
         else
         {
-            QMessageBox::information(this, "Information?", "La supression du client a été annulée");
+            QMessageBox::information(this, "Information", "La supression du client a été annulée");
             ui->statusBar->showMessage("Supression client annulée");
         }
     }
 
 }
 
-void MainWindow::treeViewInit(QSqlQuery & query) {
-    int uiBoucle;
-
-    treeModel = new QStandardItemModel();
-    QStandardItem * Noeud = treeModel->invisibleRootItem();
-
-    QList<QStandardItem *> lItem;
-
-    list = controleur_personnel->getListe();
-
-    for(uiBoucle = 0; uiBoucle < list.size(); uiBoucle++)
-        lItem.push_back(new QStandardItem(list.at(uiBoucle)));
-
-    Noeud->appendColumn(lItem);
-
-    ui->PersView->setModel(treeModel);
-    ui->PersView->expandAll();
-
-    if(!query.exec("SELECT IdType, Nom, Prenom FROM TRessource ")) {
-        qDebug() << query.lastError().text();
-    }
-    while(query.next()) {
-        unsigned int id = query.value(0).toInt();
-        lItem.at(id-1)->appendRow(new QStandardItem(query.value(2).toString() + " " + query.value(1).toString()));
-    }
+void MainWindow::InitialiseTreeView() {
+    treeModel = nullptr;
+    MiseAJourTeeView();
+    ui->PersView->header()->setVisible(false);
 }
 
 void MainWindow::slotModifierPersonnel() {
@@ -226,59 +203,59 @@ void MainWindow::slotSupprimerPersonnel() {
         QString metier = index.parent().data(Qt::DisplayRole).toString();
         if (metier == NULL) {
             ui->statusBar->showMessage("Supression personnel échouée");
-            QMessageBox::warning(this, "Supprimer quel personnel?", "Vous n'avez pas sélectionnez un personnel mais une catégorie de métier");
+            QMessageBox::critical(this, "pas un personnel", "Vous n'avez pas sélectionnez un personnel mais une catégorie de métier");
         }
         else {
-            unsigned int idRow = index.row();   // Faire une recherche sur le nb de réponses après requête
-            unsigned int idMetier = RechercheMetier(metier);
 
-            if (controleur_personnel->SupprimerPersonnel(idRow, idMetier)) {
-                ui->statusBar->showMessage("Suppression d'un personnel effectuée");
-                RefreshTreePers();
+            int reponse = QMessageBox::question(this, "Confirmation", " Confirmer la suppression définitive de ce client?", QMessageBox ::Yes | QMessageBox::No);
+            if (reponse == QMessageBox::Yes)
+            {
+                unsigned int idRow = index.row();   // Faire une recherche sur le nb de réponses après requête
+                unsigned int idMetier = controleur_personnel->TravailVersInt(metier);
+
+                if (controleur_personnel->SupprimerPersonnel(idRow, idMetier)) {
+                    ui->statusBar->showMessage("Suppression d'un personnel effectuée");
+                    MiseAJourTeeView();
+                }
+                // Appel de la méthode du controleur_personnel pour la modification
             }
-            // Appel de la méthode du controleur_personnel pour la modification
+            else {
+                QMessageBox::information(this, "Information", "La supression du personnel a été annulée");
+                ui->statusBar->showMessage("Supression personnel annulée");
+            }
         }
     }
 }
 
-unsigned int MainWindow::RechercheMetier(QString metier) {
-    unsigned int var = controleur_personnel->TravailVersInt(metier);
-    return var;
-}
+void MainWindow::MiseAJourTeeView() {
+    int uiBoucle;
+    QStandardItemModel *nouveauModel = new QStandardItemModel();
+    QStandardItem * Noeud = nouveauModel->invisibleRootItem();
 
-void MainWindow::RefreshTreePers() {
-    unsigned int idBoucle;
-    vector<Personnel> *lPers = controleur_personnel->RetourListePersonnel();
+    QList<QStandardItem *> listeMetier;
 
-    QList<QStandardItem *> lItem;
-
-    QStandardItemModel * model = new QStandardItemModel();
-    QStandardItem * Noeud = model->invisibleRootItem();
-    ui->PersView->setModel(model);
-
-    delete treeModel;
-    treeModel = model;
-
-    ui->PersView->expandAll();
-
-    list.clear();
-    list = controleur_personnel->getListe();
-
-    for(idBoucle = 0; idBoucle < list.size(); idBoucle++)
-        lItem.push_back(new QStandardItem(list.at(idBoucle)));
-
-    Noeud->appendColumn(lItem);
-
-    for (idBoucle = 0; idBoucle < lPers->size(); idBoucle++) {
-        Personnel pers = lPers->at(idBoucle);
-        lItem.at(pers.getTypeMetier()-1)->appendRow(new QStandardItem(pers.getPrenom() + " " + pers.getNom()));
+    QList<QString> *list = controleur_personnel->RecupMetier();
+    for(uiBoucle = 0; uiBoucle < list->size(); uiBoucle++) {
+        listeMetier.push_back(new QStandardItem(list->at(uiBoucle)));
     }
-    delete lPers;
+    delete list;
+
+    Noeud->appendColumn(listeMetier);
+
+    ui->PersView->setModel(nouveauModel);
+    ui->PersView->expandAll();
+    delete treeModel;
+    treeModel = nouveauModel;
+    vector<Personnel> *vecPersonnel = controleur_personnel->RetourListePersonnel();
+    for(unsigned int uiBoucle=0; uiBoucle < vecPersonnel->size(); uiBoucle++) {
+        listeMetier.at(vecPersonnel->at(uiBoucle).getTypeMetier()-1)->appendRow(new QStandardItem(vecPersonnel->at(uiBoucle).getNom() + " " + vecPersonnel->at(uiBoucle).getPrenom()));
+    }
+    delete vecPersonnel;
 }
 
 void MainWindow::slotMiseAJourTableView() {
     QSqlTableModel *nouveauModel = controleur_client->RechercheClient(ui->lineEdit_IdRecherche->text().toInt(), ui->lineEdit_NomRecherche->text(), ui->lineEdit_PrenomRecherche->text(), ui->dateEditMini->text(), ui->dateEditMax->text());
     ui->tableViewClient->setModel(nouveauModel);
-    delete model;
-    model = nouveauModel;
+    delete tableModel;
+    tableModel = nouveauModel;
 }

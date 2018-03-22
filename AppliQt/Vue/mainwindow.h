@@ -5,7 +5,6 @@
 #include "controleur_client.h"
 #include "controleur_personnel.h"
 #include <QTreeView>
-#include <QSqlQuery>
 #include <QStandardItemModel>
 
 
@@ -33,20 +32,15 @@ class MainWindow : public QMainWindow
 
     private:
         Ui::MainWindow *ui;
-        QSqlTableModel *model;
+        QSqlTableModel *tableModel;
+        QStandardItemModel *treeModel;
         Controleur_Client *controleur_client;
         Controleur_Personnel *controleur_personnel;
 
         void InitialiseGraphique();
         void InitialiseTableView();
-
-        void treeViewInit(QSqlQuery & query);
-        unsigned int RechercheMetier(QString metier);
-        void RefreshTreePers();
-        QList<QString> list;
-        QStandardItemModel * treeModel;
-
-
+        void InitialiseTreeView();
+        void MiseAJourTeeView();
 };
 
 #endif // MAINWINDOW_H

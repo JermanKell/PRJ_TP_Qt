@@ -161,7 +161,7 @@ void ModifierClientWindow::accept() //SURCHARGE, par défault ferme la window
         MajClient();
         QSqlDatabase *db = Controller_BD::getInstance()->getBD();
         db->transaction();
-        if(!controleur_client->ModifierClient(*client)) {
+        if(!controleur_client->ModifierClient(client)) {
             bErreurSQL = true;
         }
         if(!controleur_client->SupprimerRDVClient(client->getId())) {

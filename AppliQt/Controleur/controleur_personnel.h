@@ -17,10 +17,6 @@ class Controleur_Personnel
 
 private:
     QSqlQuery query;
-    QList<QString> VString;
-    QList<QString>::iterator VSIterator;
-
-    void RecupMetier();
 
     inline bool PersonneExiste(Personnel per) {
         bool var;
@@ -47,9 +43,7 @@ public:
     Controleur_Personnel();
     ~Controleur_Personnel();
 
-    QList<QString> getListe();
-
-
+    QList<QString>* RecupMetier();
     int TravailVersInt(QString metier);
     QString IntVersTravail(int id);
 

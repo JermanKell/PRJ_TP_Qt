@@ -126,7 +126,7 @@ void AjouterClientWindow::accept() //SURCHARGE POUR EMPECHER LA FENETRE DE SE FE
                       ui->lineEdit_Ville->text(), ui->lineEdit_CodePostal->text().toInt(),
                       ui->dateEdit_dateRDV->text(), ui->lineEdit_Duree->text().toInt(), ui->lineEdit_Priorite->text().toInt(),
                       ui->textEdit_Commentaires->toPlainText(), ui->lineEdit_Telephone->text().toInt());
-        if(controleur_client->ClientExiste(client))
+        if(controleur_client->ClientExiste(&client))
         {
             QMessageBox::critical(this, "Erreur", "Un client avec le même nom et prénom existe déja !");
         }
@@ -143,27 +143,34 @@ void AjouterClientWindow::accept() //SURCHARGE POUR EMPECHER LA FENETRE DE SE FE
             }
             QSqlDatabase *db = Controller_BD::getInstance()->getBD();
             db->transaction();
-            if(!controleur_client->AjouterClient(client))
+            if(!controleur_client->AjouterClient(&client))
             {
                 bErreurSQL = true;
             }
-            int idNouveauClient = controleur_client->MaxIdClient();
+            Client *clientInsere = controleur_client->GetClientFromName(ui->lineEdit_Nom->text(), ui->lineEdit_Prenom->text());
+            if(clientInsere == nullptr) {
+                bErreurSQL = true;
+            }
+            else {
+                int idNouveauClient = clientInsere->getId();
+                delete clientInsere;
 
-            vector<Personnel>* vecPersonnel = controleur_personnel->RetourListePersonnel();
-            for(unsigned int uiBoucleR=0; uiBoucleR < vecRessources.size(); uiBoucleR++)
-            {
-                for(unsigned int uiBoucleP=0; uiBoucleP < vecPersonnel->size(); uiBoucleP++)
+                vector<Personnel>* vecPersonnel = controleur_personnel->RetourListePersonnel();
+                for(unsigned int uiBoucleR=0; uiBoucleR < vecRessources.size(); uiBoucleR++)
                 {
-                    if(QString::compare(vecPersonnel->at(uiBoucleP).getNom(), vecRessources.at(uiBoucleR), Qt::CaseSensitive) == 0)
+                    for(unsigned int uiBoucleP=0; uiBoucleP < vecPersonnel->size(); uiBoucleP++)
                     {
-                        if(!controleur_client->AjouterRDVClient(idNouveauClient, vecPersonnel->at(uiBoucleP).getId()))
+                        if(QString::compare(vecPersonnel->at(uiBoucleP).getNom(), vecRessources.at(uiBoucleR), Qt::CaseSensitive) == 0)
                         {
-                            bErreurSQL = true;
+                            if(!controleur_client->AjouterRDVClient(idNouveauClient, vecPersonnel->at(uiBoucleP).getId()))
+                            {
+                                bErreurSQL = true;
+                            }
                         }
                     }
                 }
+                delete vecPersonnel;
             }
-            delete vecPersonnel;
 
             if (!bErreurSQL)
             {

@@ -12,41 +12,34 @@ Controleur_Personnel::~Controleur_Personnel() {
 
 }
 
-void Controleur_Personnel::RecupMetier() {
-    VString.clear();
-
+QList<QString>* Controleur_Personnel::RecupMetier() {
+    QList<QString>* listMetier = new QList<QString>;
     bool var = query.exec("SELECT Label FROM TType ");
     if(!var)    qDebug() << query.lastError();
     while (query.next()) {
-        VString.push_back(query.value(0).toString());
+        listMetier->push_back(query.value(0).toString());
     }
+    return listMetier;
 }
 
 int Controleur_Personnel::TravailVersInt(QString metier) {
-    VSIterator = VString.begin();
-    int variable = 1;
-
-    while(VSIterator != VString.end()) {
-        if (VSIterator->compare(metier) != 0) {
-                VSIterator++;
-                variable++;
-        }
-        else VSIterator = VString.end();
+    query.prepare("SELECT Id FROM TType WHERE Label = :metier");
+    query.bindValue(":metier", metier);
+    if(!query.exec())    qDebug() << query.lastError();
+    if (query.next()) {
+        return query.value(0).toInt();
     }
-
-    return variable;
+    return 0;
 }
 
 QString Controleur_Personnel::IntVersTravail(int id) {
-    VSIterator = VString.begin();
-    int var = 0;
-
-    while (var < id) {
-        VSIterator++;
-        var++;
+    query.prepare("SELECT Label FROM TType WHERE Id = :id");
+    query.bindValue(":id", id);
+    if(!query.exec())    qDebug() << query.lastError();
+    if (query.next()) {
+        return query.value(0).toString();
     }
-
-    return *VSIterator;
+    return 0;
 }
 
 bool Controleur_Personnel::AjouterPersonnel(QString nom, QString prenom, QString travail) {
@@ -98,10 +91,6 @@ bool Controleur_Personnel::SupprimerPersonnel(unsigned int idRow, unsigned int i
         value = query.exec();
     }
     return var&value;
-}
-
-QList<QString> Controleur_Personnel::getListe() {
-    return VString;
 }
 
 vector<Personnel>* Controleur_Personnel::RetourListePersonnel() {
