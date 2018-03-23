@@ -10,7 +10,7 @@ using namespace std;
 
 class Gestion_Client {
 private:
-    vector<Client> vecClient;
+    vector<Client> * vecClient;
     vector<Client>::iterator itPrio;
 
     vector<RendezVous*> RDVector;
@@ -21,11 +21,11 @@ private:
 	void TriParPrio(void);
 
 public:
-    Gestion_Client();
+    Gestion_Client(vector<Client> * vecteur);
     ~Gestion_Client();
 
     void AjouterClient(Client client);
-    vector<Client> getVectorClient(void);
+    vector<Client> *getVectorClient(void);
 
 	void ProgRDV(void);
     void StockageRDVsurBD();

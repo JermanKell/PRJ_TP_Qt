@@ -72,7 +72,8 @@ HEADERS += \
     Controleur/dbmanager_client.h \
     Controleur/dbmanager_personnel.h \
     Controleur/Gestion_Client.h \
-    Controleur/Gestion_Creneau.h
+    Controleur/Gestion_Creneau.h \
+    Controleur/FoncteurTrieRessource.h
 
 FORMS += \
     #Vue

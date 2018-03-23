@@ -33,7 +33,7 @@ public:
     bool ModifierClient(Client * cl);
 
     /* Retourne une map de clients avec l'ensemble de leurs ressources associées (id) */
-    map<int, Client*>* GetListeClient();
+    vector<Client> *GetListeClient(QString date);
 
     /* Retourne un client depuis son id */
     Client* GetClient(int idClient);

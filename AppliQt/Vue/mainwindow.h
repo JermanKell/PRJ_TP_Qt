@@ -47,7 +47,10 @@ class MainWindow : public QMainWindow
         /* Supprime un personnel et met à jour la vue */
         void slotSupprimerPersonnel();
 
-    private:
+private slots:
+        void on_button_Plan_clicked();
+
+private:
         Ui::MainWindow *ui;
         QSqlTableModel *tableModel;
         QStandardItemModel *treeModel;

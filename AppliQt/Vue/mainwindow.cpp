@@ -6,6 +6,7 @@
 #include "modifierpersonnelwindow.h"
 #include "aproposwindow.h"
 #include "Controleur/dbconnexion.h"
+#include "Controleur/Gestion_Client.h"
 #include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -274,4 +275,10 @@ void MainWindow::slotMiseAJourTableView() {
     ui->tableViewClient->setModel(nouveauModel);
     delete tableModel;
     tableModel = nouveauModel;
+}
+
+void MainWindow::on_button_Plan_clicked()
+{
+    Gestion_Client gClient = Gestion_Client(dbm_client->GetListeClient(ui->edit_date->text()));
+    gClient.ProgRDV();
 }

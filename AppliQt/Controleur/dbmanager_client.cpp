@@ -97,11 +97,13 @@ bool DBManager_Client::SupprimerRDVClient(int idClient) {
     return true;
 }
 
-map<int, Client*>* DBManager_Client::GetListeClient() {
-    if(!query.exec("SELECT * FROM TClient")) {
+vector<Client>* DBManager_Client::GetListeClient(QString date) {
+    query.prepare("SELECT * FROM TClient WHERE dateRDV = :date");
+    query.bindValue(":date", date);
+    if(!query.exec()) {
         qDebug() << query.lastError().text();
     }
-    map<int, Client*>* mapClient = new map<int, Client*>();
+   vector<Client>* mapClient = new vector<Client>();
     while (query.next()) {
         vector<int> vecId;
         int idClient = query.value(0).toInt();
@@ -117,16 +119,16 @@ map<int, Client*>* DBManager_Client::GetListeClient() {
             vecId.push_back(queryRessources.value(2).toInt());
         }
 
-       Client *client = new Client(
+       Client client =  Client(
                      query.value(1).toString(), query.value(2).toString(), query.value(3).toString(), query.value(4).toString(),
                      query.value(5).toInt(),
                      query.value(8).toString(),
                      query.value(9).toInt(),query.value(10).toInt(),
                      query.value(6).toString(),
                      query.value(7).toInt());
-       client->setId(query.value(0).toInt());
-       client->setIdRessources(vecId);
-       mapClient->insert(std::make_pair(client->getId(),client));
+       client.setId(query.value(0).toInt());
+       client.setIdRessources(vecId);
+       mapClient->push_back(client);
     }
     return mapClient;
 }
