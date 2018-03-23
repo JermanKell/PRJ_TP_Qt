@@ -12,12 +12,14 @@
 
 using namespace std;
 
+//Classe interagissant avec la classe Personnel
 class DBManager_Personnel
 {
 
 private:
     QSqlQuery query;
 
+    /* Retourne vrai si un personnel portant le même nom et prenom existe dans la base */
     inline bool PersonneExiste(Personnel per) {
         bool var;
 
@@ -40,15 +42,28 @@ public:
     DBManager_Personnel();
     ~DBManager_Personnel();
 
+    /* Retourne une liste de tous les types (métiers) de la base */
     QList<QString>* RecupMetier();
+
+    /* Retourne l'id correspondand au label du type (métier) en paramètre */
     int TravailVersInt(QString metier);
+
+    /* Retourne le label du type (métier) depuis son id */
     QString IntVersTravail(int id);
 
+    /* Ajoute un personnel dans la base et ajoute/supprime un login/mdp */
     bool AjouterPersonnel(QString nom, QString prenom, QString travail, QString identifiant, QString mdp);
+
+    /* Modifie les données d'un personnel */
     bool ModifierPersonnel(QString nom, QString prenom, QString nvmetier, QString ancienMetier, QString identifiant, QString mdp, int idRessource);
+
+    /* Supprime un personnel et son sompte associé si il est informaticien */
     bool SupprimerPersonnel(unsigned int idRow, QString Metier);
 
+    /* Retourne tous les personnels de la base */
     vector<Personnel>* RetourListePersonnel();
+
+    /* Retourne tous les personnels d'un métier donné */
     QList<QString>* RetournerPersonnel(QString nomMetier, int placeReq);
 };
 

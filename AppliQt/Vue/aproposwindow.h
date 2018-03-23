@@ -7,6 +7,7 @@ namespace Ui {
     class AProposWindow;
 }
 
+//Classe Vue A propos
 class AProposWindow : public QDialog
 {
     Q_OBJECT

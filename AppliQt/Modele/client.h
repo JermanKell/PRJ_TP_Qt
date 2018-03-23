@@ -4,6 +4,7 @@
 #include <QString>
 #include<vector>
 
+//Classe modèle d'un client
 class Client
 {
     private:
@@ -26,6 +27,7 @@ class Client
 
     Client(QString nom, QString prenom, QString adresse, QString ville, int codepostal, QString jour, int duree, int priorite, QString commentaires, int telephone);
 
+    //getter
     int getId();
     QString getNom();
     QString getPrenom();
@@ -40,6 +42,7 @@ class Client
     QString getCommentaires();
     int getTelephone();
 
+    //setter
     void setId(int id);
     void setNom(QString nom);
     void setPrenom(QString prenom);
@@ -54,7 +57,10 @@ class Client
     void setCommentaires(QString commentaires);
     void setTelephone(int telephone);
 
+    /* Retourne vrai si la liste id ressources est vide sinon faux */
     bool IdRessourcesIsEmpty();
+
+    /* Retourne vrai si la liste des noms ressources est vide sinon faux */
     bool NomRessourcesIsEmpty();
 };
 

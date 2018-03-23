@@ -9,6 +9,7 @@ namespace Ui {
     class ModifierClientWindow;
 }
 
+//Classe Vue modifier client
 class ModifierClientWindow : public QDialog
 {
     Q_OBJECT
@@ -18,6 +19,7 @@ class ModifierClientWindow : public QDialog
         ~ModifierClientWindow();
 
     private slots:
+        /* slot appelé lorsque le bouton validé est acivé. Vérifie les champs et tente de mettre à jour un client à la base */
         void accept();
 
     private:
@@ -26,10 +28,16 @@ class ModifierClientWindow : public QDialog
         DBManager_Personnel *dbm_personnel;
         Client *client;
 
-
+        /* Initialise les composants graphiques de la vue */
         void InitialiseGraphique();
+
+        /* Méthode chargée de remplir la listWidget des ressources de la base */
         void RemplirListWidgetRessources();
+
+        /* Vérifie les champs lors de la validation */
         bool ControleData();
+
+        /* Met à jour les données de l'attribut client */
         void MajClient();
 };
 

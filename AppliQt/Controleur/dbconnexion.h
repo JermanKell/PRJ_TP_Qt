@@ -12,6 +12,7 @@
 
 using namespace std;
 
+//Classe singleton connexion
 class DBConnexion {
 private:
     static DBConnexion * dbConnexion;
@@ -21,6 +22,7 @@ private:
     ~DBConnexion();
 
 public:
+    /* retourne l'instance de la classe */
     static DBConnexion * getInstance() {
         if(dbConnexion == nullptr) {
             dbConnexion = new DBConnexion();
@@ -38,10 +40,12 @@ public:
         return dbConnexion;
     }
 
+    /* retourne la bdd */
     QSqlDatabase * getBD() {
         return db;
     }
 
+    /* détruit l'objet singleton */
     static void kill() {
         if (dbConnexion != nullptr)
         {
