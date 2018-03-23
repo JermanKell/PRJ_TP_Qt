@@ -35,6 +35,7 @@ SOURCES += \
     #Modèle
     Modele/client.cpp \
     Modele/personnel.cpp \
+    Modele/RendezVous.cpp \
     #Vue
     Vue/mainwindow.cpp \
     Vue/connexionwindow.cpp \
@@ -47,13 +48,16 @@ SOURCES += \
     Controleur/dbconnexion.cpp \
     Controleur/dbmanager_identification.cpp \
     Controleur/dbmanager_client.cpp \
-    Controleur/dbmanager_personnel.cpp
+    Controleur/dbmanager_personnel.cpp \
+    Controleur/Gestion_Client.cpp \
+    Controleur/Gestion_Creneau.cpp
 
 HEADERS += \
     c_init_bd.h \
     #Modèle
     Modele/client.h \
     Modele/personnel.h \
+    Modele/RendezVous.h \
     #Vue
     Vue/mainwindow.h \
     Vue/connexionwindow.h \
@@ -66,7 +70,9 @@ HEADERS += \
     Controleur/dbconnexion.h \
     Controleur/dbmanager_identification.h \
     Controleur/dbmanager_client.h \
-    Controleur/dbmanager_personnel.h
+    Controleur/dbmanager_personnel.h \
+    Controleur/Gestion_Client.h \
+    Controleur/Gestion_Creneau.h
 
 FORMS += \
     #Vue
