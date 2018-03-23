@@ -6,6 +6,7 @@
 
 QT       += core gui
 QT       += sql
+QT       += xml
 CONFIG += c++11
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -50,7 +51,8 @@ SOURCES += \
     Controleur/dbmanager_client.cpp \
     Controleur/dbmanager_personnel.cpp \
     Controleur/Gestion_Client.cpp \
-    Controleur/Gestion_Creneau.cpp
+    Controleur/Gestion_Creneau.cpp \
+    Vue/ajouterdivers.cpp
 
 HEADERS += \
     c_init_bd.h \
@@ -73,7 +75,8 @@ HEADERS += \
     Controleur/dbmanager_personnel.h \
     Controleur/Gestion_Client.h \
     Controleur/Gestion_Creneau.h \
-    Controleur/FoncteurTrieRessource.h
+    Controleur/FoncteurTrieRessource.h \
+    Vue/ajouterdivers.h
 
 FORMS += \
     #Vue
@@ -83,4 +86,5 @@ FORMS += \
     Vue/modifierclientwindow.ui \
     Vue/ajouterpersonnelwindow.ui \
     Vue/modifierpersonnelwindow.ui \
-    Vue/aproposwindow.ui
+    Vue/aproposwindow.ui \
+    Vue/ajouterdivers.ui

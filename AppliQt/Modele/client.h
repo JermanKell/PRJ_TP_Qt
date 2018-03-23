@@ -9,6 +9,8 @@ class Client
 {
     private:
 
+    QString str_remarque;
+
     int int_id;
     QString str_nom;
     QString str_prenom;
@@ -26,6 +28,11 @@ class Client
     public:
 
     Client(QString nom, QString prenom, QString adresse, QString ville, int codepostal, QString jour, int duree, int priorite, QString commentaires, int telephone);
+
+
+
+    QString getRemarque();
+    void setRemarque(QString rem);
 
     //getter
     int getId();

@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "dbmanager_personnel.h"
+#include "mainwindow.h"
 #include <QMessageBox>
 
 namespace Ui {

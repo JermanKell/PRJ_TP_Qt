@@ -18,7 +18,8 @@ void AjouterClientWindow::InitialiseGraphique() {
     ui->lineEdit_Duree->setValidator(new QIntValidator(0, 600, this));
     ui->lineEdit_Priorite->setValidator(new QIntValidator(1, 5, this));
     ui->lineEdit_Telephone->setValidator(new QDoubleValidator(0, 999999999, 9, this));
-    ui->dateEdit_dateRDV->setMinimumDate(QDate::currentDate());
+    ui->dateEdit_dateRDV->setDate(QDate::currentDate());
+    ui->dateEdit_dateRDV->setMaximumDate(QDate::currentDate().addDays(30));
 
     QFont font;
     font.setCapitalization(QFont::Capitalize);
@@ -143,6 +144,7 @@ void AjouterClientWindow::accept() //SURCHARGE POUR EMPECHER LA FENETRE DE SE FE
             }
             QSqlDatabase *db = DBConnexion::getInstance()->getBD();
             db->transaction();
+            client.setRemarque(ui->lineEdit_Remarque->text());
             if(!dbm_client->AjouterClient(&client))
             {
                 bErreurSQL = true;

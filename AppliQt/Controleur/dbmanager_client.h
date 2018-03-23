@@ -13,9 +13,15 @@ class DBManager_Client
 private:
     QSqlQuery query;
 
+    int compteurINSERT;
+
 public:
     DBManager_Client();
     ~DBManager_Client();
+
+    int getCompteurINSERT() {
+        return compteurINSERT;
+    }
 
     /* Vérifie si un client portant le même nom et prénom existe déja dans la base */
     bool ClientExiste(Client * cl);

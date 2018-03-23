@@ -19,6 +19,8 @@ class DBManager_Personnel
 private:
     QSqlQuery query;
 
+    int compteurINSERT;
+
     /* Retourne vrai si un personnel portant le même nom et prenom existe dans la base */
     inline bool PersonneExiste(Personnel per) {
         bool var;
@@ -41,6 +43,10 @@ private:
 public:
     DBManager_Personnel();
     ~DBManager_Personnel();
+
+    int getCompteurINSERT() {
+        return compteurINSERT;
+    }
 
     /* Retourne une liste de tous les types (métiers) de la base */
     QList<QString>* RecupMetier();

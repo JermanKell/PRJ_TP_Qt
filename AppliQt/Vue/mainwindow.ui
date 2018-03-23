@@ -20,7 +20,7 @@
       <item>
        <widget class="QTabWidget" name="tabWidget">
         <property name="currentIndex">
-         <number>2</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="tab_Client">
          <attribute name="title">
@@ -229,6 +229,13 @@
              <widget class="QTreeView" name="PersView"/>
             </item>
             <item>
+             <widget class="QPushButton" name="button_xml">
+              <property name="text">
+               <string>Generer XML</string>
+              </property>
+             </widget>
+            </item>
+            <item>
              <spacer name="verticalSpacer">
               <property name="orientation">
                <enum>Qt::Vertical</enum>
@@ -342,7 +349,7 @@
      <x>0</x>
      <y>0</y>
      <width>655</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFichier">
@@ -355,6 +362,7 @@
      </property>
      <addaction name="actionClient"/>
      <addaction name="actionPersonnel"/>
+     <addaction name="actionDivers"/>
     </widget>
     <addaction name="menuAjouter"/>
     <addaction name="separator"/>
@@ -426,6 +434,11 @@
    </property>
    <property name="toolTip">
     <string>Ajouter un personnel</string>
+   </property>
+  </action>
+  <action name="actionDivers">
+   <property name="text">
+    <string>Divers</string>
    </property>
   </action>
  </widget>

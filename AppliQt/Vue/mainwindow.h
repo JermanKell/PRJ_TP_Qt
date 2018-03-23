@@ -23,6 +23,9 @@ class MainWindow : public QMainWindow
 
     public slots:
 
+        // Ouvre la vue ajouter personnel divers
+        void slotAjouterDivers();
+
         /* Ouvre la vue A propos */
         void slotAPropos();
 
@@ -49,6 +52,8 @@ class MainWindow : public QMainWindow
 
 private slots:
         void on_button_Plan_clicked();
+
+        void on_button_xml_clicked();
 
 private:
         Ui::MainWindow *ui;

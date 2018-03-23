@@ -14,6 +14,13 @@ Client::Client(QString nom, QString prenom, QString adresse, QString ville, int 
     int_telephone = telephone;
 }
 
+QString Client::getRemarque() {
+    return str_remarque;
+}
+void Client::setRemarque(QString rem) {
+    str_remarque = rem;
+}
+
 int Client::getId() {
     return int_id;
 }

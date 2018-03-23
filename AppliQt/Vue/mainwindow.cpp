@@ -7,7 +7,9 @@
 #include "aproposwindow.h"
 #include "Controleur/dbconnexion.h"
 #include "Controleur/Gestion_Client.h"
+#include "Vue/ajouterdivers.h"
 #include <QDebug>
+#include <qdom.h>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -30,6 +32,10 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->action_client_Tool, SIGNAL(triggered()), this, SLOT(slotAjouterClient()));
     QObject::connect(ui->action_Personnel_Tool, SIGNAL(triggered()), this, SLOT(slotAjouterPersonnel()));
 
+    // Slot Ajouter Personnel dans Divers
+
+    QObject::connect(ui->actionDivers, SIGNAL(triggered()), this, SLOT(slotAjouterDivers()));
+
     //Evenements TableViewClient
     QObject::connect(ui->btn_ModifierClient, SIGNAL(clicked()), this, SLOT(slotModifierClient()));
     QObject::connect(ui->btn_SupprimerClient, SIGNAL(clicked()), this, SLOT(slotSupprimerClient()));
@@ -48,6 +54,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    qDebug() << "Nombre de requête INSERT total executé: " << dbm_client->getCompteurINSERT() + dbm_personnel->getCompteurINSERT();
+
     delete ui;
     delete tableModel;
     delete treeModel;
@@ -57,6 +65,7 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::InitialiseGraphique() {
+    this->setWindowTitle("Gestion de RDV");
     ui->lineEdit_IdRecherche->setValidator(new QDoubleValidator(0, 999999999, 9, this));
     ui->dateEditMini->setDate(QDate::fromString(dbm_client->DateMinimum(), "yyyy-MM-dd"));
     ui->dateEditMax->setDate(QDate::fromString(dbm_client->DateMaximum(), "yyyy-MM-dd"));
@@ -71,6 +80,9 @@ void MainWindow::InitialiseGraphique() {
 
 void MainWindow::InitialiseTableView() {
     tableModel = NULL;
+
+    ui->lineEdit_PrenomRecherche->setText("son prénom");
+
     slotMiseAJourTableView();
     ui->tableViewClient->hideColumn(3);
     ui->tableViewClient->hideColumn(4);
@@ -82,6 +94,24 @@ void MainWindow::InitialiseTableView() {
     ui->tableViewClient->horizontalHeader()->setStretchLastSection(true);
     ui->tableViewClient->verticalHeader()->setVisible(false);
 }
+
+
+// Slot Ajouter Personnel Divers
+void MainWindow::slotAjouterDivers() {
+    ajouterDivers divers(dbm_personnel);
+    if (divers.exec()==QDialog::Accepted) {
+        ui->statusBar->showMessage("Ajout personnel dans la categorie divers validé");
+        MiseAJourTeeView();
+    }
+    else {
+        ui->statusBar->showMessage("Ajout personnel dans la categorie divers annulé");
+    }
+}
+
+
+
+
+
 
 void MainWindow::slotAjouterClient() {
     AjouterClientWindow ACWindow(dbm_client, dbm_personnel);
@@ -97,11 +127,11 @@ void MainWindow::slotAjouterClient() {
 }
 
 void MainWindow::slotAjouterPersonnel() {
-    AjouterPersonnelWindow APWindow(dbm_personnel);
+    AjouterPersonnelWindow APWindow(dbm_personnel, this);
     if(APWindow.exec()==QDialog::Accepted)
     {
         MiseAJourTeeView();
-        ui->statusBar->showMessage("Ajout personnel validé");
+        ui->statusBar->showMessage("Ajout de personne terminé");
     }
     else
     {
@@ -281,4 +311,41 @@ void MainWindow::on_button_Plan_clicked()
 {
     Gestion_Client gClient = Gestion_Client(dbm_client->GetListeClient(ui->edit_date->text()));
     gClient.ProgRDV();
+}
+
+void MainWindow::on_button_xml_clicked()
+{
+    vector<Personnel>  * PerVec =  dbm_personnel->RetourListePersonnel();
+
+  QDomImplementation impl = QDomDocument().implementation();
+  // document with document type
+  QString name = "Ressources";
+  QString publicId = "-//XADECK//DTD Stone 1.0 //EN";
+  QString systemId = "http://www-imagis.imag.fr/DTD/stone1.dtd";
+  QDomDocument doc(impl.createDocumentType(name,publicId,systemId));
+  // add some XML comment at the beginning
+  doc.appendChild(doc.createComment("This file describe a jewel"));
+  doc.appendChild(doc.createTextNode("\n")); // for nicer output
+  // root node
+  QDomElement stoneNode = doc.createElement("Ressources");
+  stoneNode.setAttribute("name","diamond");
+  doc.appendChild(stoneNode);
+  // appearance
+  QDomElement appearanceNode = doc.createElement("TRessource");
+  QDomElement colorNode = doc.createElement("Nom");
+ /* colorNode.appendChild(doc.createTextNode("255 255 255"));
+  appearanceNode.appendChild(colorNode);
+  stoneNode.appendChild(appearanceNode);
+  // geometry
+  QDomElement geometryNode = doc.createElement("geometry");
+  QDomElement triangleNode = doc.createElement("triangle");
+  triangleNode.appendChild(doc.createTextNode("0 0 0 1 0 0 1 1 0"));
+  geometryNode.appendChild(triangleNode);
+  QDomElement quadNode = doc.createElement("quad");
+  quadNode.appendChild(doc.createTextNode("0 0 1 1 0 1 1 1 1 0 1 1"));
+  geometryNode.appendChild(quadNode);
+  stoneNode.appendChild(geometryNode);
+  cout<<doc.toString();*/
+
+  delete PerVec;
 }

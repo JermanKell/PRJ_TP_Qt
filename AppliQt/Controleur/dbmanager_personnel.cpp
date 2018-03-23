@@ -3,6 +3,7 @@
 DBManager_Personnel::DBManager_Personnel()
 {
     query = QSqlQuery(*(DBConnexion::getInstance()->getBD()));
+    compteurINSERT = 0;
 }
 
 DBManager_Personnel::~DBManager_Personnel() {
@@ -60,6 +61,7 @@ bool DBManager_Personnel::AjouterPersonnel(QString nom, QString prenom, QString 
 
         if (!varIns)
             qDebug() << query.lastError();
+        compteurINSERT++;
 
         if (QString::compare("Informaticien", travail, Qt::CaseInsensitive) == 0) {
             query.prepare("SELECT Id FROM TRessource WHERE Nom LIKE :nom AND Prenom LIKE :prenom AND IdType = :idtype");
@@ -78,10 +80,11 @@ bool DBManager_Personnel::AjouterPersonnel(QString nom, QString prenom, QString 
             query.bindValue(":mdp", mdp);
             varInserCompte = query.exec();
 
-            if (!varInserCompte)
+            if (!varInserCompte) {
                 qDebug() << query.lastError();
-
+            }
             else {
+                 compteurINSERT++;
                 query.prepare("SELECT Login, MdP FROM TCompte WHERE IdRessource = :id");
                 query.bindValue(":id", idRessource);
                 if (query.exec()) {
@@ -121,6 +124,7 @@ bool DBManager_Personnel::ModifierPersonnel(QString nom, QString prenom, QString
 
         if (!varIns)
             qDebug() << query.lastError() << endl;
+        compteurINSERT++;
     }
     if (QString::compare("Informaticien", ancienMetier, Qt::CaseInsensitive) == 0)
     {

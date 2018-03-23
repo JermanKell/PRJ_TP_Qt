@@ -3,6 +3,7 @@
 DBManager_Client::DBManager_Client()
 {
     query = QSqlQuery(*(DBConnexion::getInstance()->getBD()));
+    compteurINSERT = 0;
 }
 
 bool DBManager_Client::ClientExiste(Client * cl) {
@@ -23,6 +24,7 @@ bool DBManager_Client::ClientExiste(Client * cl) {
 }
 
 bool DBManager_Client::AjouterClient(Client * cl) {
+    QString concatCommRemarque = cl->getCommentaires() + "\n" + cl->getRemarque();
     query.prepare("INSERT INTO TClient (Nom, Prenom, Adresse, Ville, CP, Commentaire, Tel, DateRdv, DureeRdv, Priorite) "
                   "VALUES (:nom, :prenom, :adresse, :ville, :cp, :comm, :tel, :date, :duree, :prio)");
     query.bindValue(":nom", cl->getNom());
@@ -30,7 +32,7 @@ bool DBManager_Client::AjouterClient(Client * cl) {
     query.bindValue(":adresse", cl->getAdresse());
     query.bindValue(":ville", cl->getVille());
     query.bindValue(":cp", cl->getCP());
-    query.bindValue(":comm", cl->getCommentaires());
+    query.bindValue(":comm", concatCommRemarque);
     query.bindValue(":tel", cl->getTelephone());
     query.bindValue(":date", cl->getDateRDV());
     query.bindValue(":duree", cl->getDureeRDV());
@@ -39,6 +41,7 @@ bool DBManager_Client::AjouterClient(Client * cl) {
         qDebug() << query.lastError();
         return false;
     }
+    compteurINSERT++;
     return true;
 }
 
@@ -83,6 +86,7 @@ bool DBManager_Client::AjouterRDVClient(int idClient, int idRessource) {
         qDebug() << query.lastError();
         return false;
     }
+    compteurINSERT++;
     return true;
 }
 
@@ -222,7 +226,7 @@ QSqlTableModel* DBManager_Client::RechercheClient(int id, QString nom, QString p
      model->setFilter(QString("id = "+ QString::number(id) +
                                " OR nom LIKE '"+ nom +
                                "' OR prenom LIKE '"+ prenom +
-                               "' OR dateRdv BETWEEN '"+ dateDebut +"' and '"+ dateFin +"'"));
+                               "' OR dateRdv BETWEEN '"+ dateDebut +"' and '"+ dateFin +"' ORDER BY Nom ASC"));
       return model;
 }
 
