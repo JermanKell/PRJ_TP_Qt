@@ -1,7 +1,7 @@
 #include "dbconnexion.h"
 
-DBConnexion * DBConnexion::dbConnexion = nullptr;
-QSqlDatabase * DBConnexion::db = nullptr;
+DBConnexion * DBConnexion::dbConnexion = NULL;
+QSqlDatabase * DBConnexion::db = NULL;
 
 DBConnexion::DBConnexion() {
 

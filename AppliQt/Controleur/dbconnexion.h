@@ -24,7 +24,7 @@ private:
 public:
     /* retourne l'instance de la classe */
     static DBConnexion * getInstance() {
-        if(dbConnexion == nullptr) {
+        if(dbConnexion == NULL) {
             dbConnexion = new DBConnexion();
 
             if (!QFile::exists("base_tmp.sqli"))
@@ -47,14 +47,14 @@ public:
 
     /* détruit l'objet singleton */
     static void kill() {
-        if (dbConnexion != nullptr)
+        if (dbConnexion != NULL)
         {
             db->close();
             delete db;
-            db = nullptr;
+            db = NULL;
 
             delete dbConnexion;
-            dbConnexion = nullptr;
+            dbConnexion = NULL;
         }
     }
 };

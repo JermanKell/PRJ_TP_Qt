@@ -148,7 +148,7 @@ void AjouterClientWindow::accept() //SURCHARGE POUR EMPECHER LA FENETRE DE SE FE
                 bErreurSQL = true;
             }
             Client *clientInsere = dbm_client->GetClientFromName(ui->lineEdit_Nom->text(), ui->lineEdit_Prenom->text());
-            if(clientInsere == nullptr) {
+            if(clientInsere == NULL) {
                 bErreurSQL = true;
             }
             else {

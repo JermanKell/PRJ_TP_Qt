@@ -131,9 +131,20 @@ bool DBManager_Personnel::ModifierPersonnel(QString nom, QString prenom, QString
         if (!varDelC)
             qDebug() << query.lastError() << endl;
     }
+
     return varMAJ&(varIns|varDelC);
 }
 
+bool DBManager_Personnel::SupprimerRDV(int idPersonnel) {
+    query.prepare("DELETE FROM TRdv WHERE IdRessource = :idP");
+    query.bindValue(":idP", idPersonnel);
+
+    if(!query.exec()) {
+        qDebug() << query.lastError();
+        return false;
+    }
+    return true;
+}
 
 bool DBManager_Personnel::SupprimerPersonnel(unsigned int idRow, QString Metier) {
     bool varReq;
@@ -151,6 +162,10 @@ bool DBManager_Personnel::SupprimerPersonnel(unsigned int idRow, QString Metier)
             nbLigne++;
         }
         id = query.value(0).toInt();
+
+        if(!SupprimerRDV(id)) {
+            qDebug() << query.lastError();
+        }
 
         query.prepare("DELETE FROM TRessource WHERE Id = :id ");
         query.bindValue(":id", id);

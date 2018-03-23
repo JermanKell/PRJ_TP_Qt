@@ -148,7 +148,7 @@ Client* DBManager_Client::GetClient(int idClient) {
        client->setId(query.value(0).toInt());
        return client;
     }
-    return nullptr;
+    return NULL;
 }
 
 Client* DBManager_Client::GetClientFromName(QString nom, QString prenom) {
@@ -169,7 +169,7 @@ Client* DBManager_Client::GetClientFromName(QString nom, QString prenom) {
        client->setId(query.value(0).toInt());
        return client;
     }
-    return nullptr;
+    return NULL;
 }
 
 vector<int>* DBManager_Client::GetListeIdRessourcesClient(int idClient) {

@@ -57,6 +57,9 @@ public:
     /* Modifie les données d'un personnel */
     bool ModifierPersonnel(QString nom, QString prenom, QString nvmetier, QString ancienMetier, QString identifiant, QString mdp, int idRessource);
 
+    /* Supprime tous les RDV depuis un id personnel */
+    bool SupprimerRDV(int idPersonnel);
+
     /* Supprime un personnel et son sompte associé si il est informaticien */
     bool SupprimerPersonnel(unsigned int idRow, QString Metier);
 

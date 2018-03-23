@@ -69,7 +69,7 @@ void MainWindow::InitialiseGraphique() {
 }
 
 void MainWindow::InitialiseTableView() {
-    tableModel = nullptr;
+    tableModel = NULL;
     slotMiseAJourTableView();
     ui->tableViewClient->hideColumn(3);
     ui->tableViewClient->hideColumn(4);
@@ -176,7 +176,7 @@ void MainWindow::slotSupprimerClient() {
 }
 
 void MainWindow::InitialiseTreeView() {
-    treeModel = nullptr;
+    treeModel = NULL;
     MiseAJourTeeView();
     ui->PersView->header()->setVisible(false);
 }
@@ -188,7 +188,7 @@ void MainWindow::slotModifierPersonnel() {
         QMessageBox::warning(this, "Modifier quel personnel ?", "Aucun personnel n'a été selectionné dans l'arbre");
     }
     else {
-        if (index.data(Qt::DisplayRole).toString().contains("Admin")) {
+        if (QString::compare(index.data(Qt::DisplayRole).toString(), "Admin Admin") == 0) {
             ui->statusBar->showMessage("Modification personnel échouée");
             QMessageBox::critical(this, "Erreur", "Impossible de modifier le compte Administrateur !");
         }
@@ -220,9 +220,9 @@ void MainWindow::slotSupprimerPersonnel() {
                 QMessageBox::warning(this, "Supprimer quel personnel?", "Vous n'avez pas selectionne un personnel mais une categorie de metier");
             }
             else {
-                if (QString::compare(index.data(Qt::DisplayRole).toString(), "Admin") == 0) {
+                if (QString::compare(index.data(Qt::DisplayRole).toString(), "Admin Admin") == 0) {
                     ui->statusBar->showMessage("Suppression personnel échouée");
-                    QMessageBox::warning(this, "Erreur", "Impossible de supprimer le compte Administrateur !");
+                    QMessageBox::critical(this, "Erreur", "Impossible de supprimer le compte Administrateur !");
                 }
                 else {
                     unsigned int idRow = index.row();   // Faire une recherche sur le nb de réponses après requète
